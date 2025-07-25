@@ -134,7 +134,6 @@ function Home() {
         return () => { if (section) observer.unobserve(section); };
     }, []);
 
-    // Add this with your other useEffect hooks
     useEffect(() => {
         const socialText = "Follow and experience our robotics journey...";
         const typingElement = document.querySelector('.typing-text');
@@ -250,7 +249,7 @@ function Home() {
                 </Link>
 
                 <div className="jags-pattern">
-                    {[...Array(4)].map((_, i) => (
+                    {[...Array(5)].map((_, i) => (
                         <div key={i} className="jags-line">{"JAGS ".repeat(20)}</div>
                     ))}
                 </div>

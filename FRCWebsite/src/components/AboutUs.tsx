@@ -1,3 +1,62 @@
-export default function AboutUs() {
-    return <h1>About Us Page</h1>;
+import { useEffect, useState } from 'react';
+import './AboutUs.css';
+import { Link } from 'react-router-dom';
+import AboutImage from '../assets/AboutImage.png';
+
+function AboutUs() {
+    const [displayedText, setDisplayedText] = useState('');
+
+    useEffect(() => {
+        let currentChar = 0;
+        const typingInterval = setInterval(() => {
+            setDisplayedText("About Us".slice(0, currentChar + 1));
+            currentChar++;
+            if (currentChar === "About Us".length) clearInterval(typingInterval);
+        }, 150);
+        return () => clearInterval(typingInterval);
+    }, []);
+
+    return (
+        <div className="about-page">
+            <div className="jags-pattern-about">
+                {[...Array(8)].map((_, i) => (
+                    <div key={`jags-${i}`} className="jags-line">{"JAGS ".repeat(40)}</div>
+                ))}
+            </div>
+
+            <div className="about-container">
+                <Link to="/gallery" className="floating-button about-button">
+                    View Gallery
+                </Link>
+
+                <div className="about-content">
+                    <h1 className="about-header">{displayedText}</h1>
+
+                    <div className="about-content-row">
+                        <div className="about-image">
+                            <img src={AboutImage} alt="Team About" />
+                        </div>
+
+                        <div className="about-text">
+                            <p>
+                                Founded in 2012, Team 4015 Jaguar Robotics has been competing in FIRST Robotics
+                                competitions with passion and innovation. Our team consists of dedicated students
+                                from St.Joseph High School.
+                            </p>
+                            <p>
+                                We emphasize STEM education, teamwork, and community outreach. Each season,
+                                we design and build a competitive robot while developing valuable technical
+                                and professional skills.
+                            </p>
+                            <p>
+                                Our achievements include multiple regional awards and a strong track record
+                                of mentoring younger students in our community through various STEM initiatives.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
+export default AboutUs;
