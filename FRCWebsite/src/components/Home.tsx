@@ -223,7 +223,6 @@ function Home() {
 
     return (
         <div className="home-screen">
-            {/* Hero Slideshow */}
             <div style={{ width: '100%', minHeight: '500px' }}>
                 <div className={`gallery-container ${slideIn ? 'slide-in' : ''}`}>
                     <div className="team-name">{displayedText}</div>
@@ -244,9 +243,11 @@ function Home() {
             </div>
 
             <div className="about-container">
-                <Link to="/aboutus" className="floating-button about-button">
-                    More About Us
-                </Link>
+                <div className="about-button-container">
+                    <Link to="/aboutus" className="floating-button about-button">
+                        More About Us
+                    </Link>
+                </div>
 
                 <div className="jags-pattern">
                     {[...Array(5)].map((_, i) => (

@@ -9,6 +9,7 @@ function Navbar() {
                 <div className="logo">
                     <img src={logo} alt="Company logo" />
                 </div>
+
                 <ul className="nav-links">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/aboutus">About</Link></li>

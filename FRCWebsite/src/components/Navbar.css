@@ -21,13 +21,13 @@
 
 .nav-spacer {
     flex-grow: 0;
-    width: 650px; /* or any small spacer */
+    width: 650px;
 }
 
 .logo img {
     height: 100px;
     width: auto;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .nav-links {

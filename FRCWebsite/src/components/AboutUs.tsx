@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './AboutUs.css';
-import { Link } from 'react-router-dom';
 import AboutImage from '../assets/AboutImage.png';
+import coreValues from '../assets/coreValues.png';
 
 function AboutUs() {
     const [displayedText, setDisplayedText] = useState('');
@@ -16,6 +16,32 @@ function AboutUs() {
         return () => clearInterval(typingInterval);
     }, []);
 
+    useEffect(() => {
+        // For core values
+        const valueCards = document.querySelectorAll('.value-card');
+        // For timeline nodes
+        const timelineNodes = document.querySelectorAll('.timeline-node');
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        valueCards.forEach(card => observer.observe(card));
+        timelineNodes.forEach(node => observer.observe(node));
+
+        return () => {
+            valueCards.forEach(card => observer.unobserve(card));
+            timelineNodes.forEach(node => observer.unobserve(node));
+        };
+    }, []);
+
     return (
         <div className="about-page">
             <div className="jags-pattern-about">
@@ -25,9 +51,6 @@ function AboutUs() {
             </div>
 
             <div className="about-container">
-                <Link to="/gallery" className="floating-button about-button">
-                    View Gallery
-                </Link>
 
                 <div className="about-content">
                     <h1 className="about-header">{displayedText}</h1>
@@ -55,7 +78,44 @@ function AboutUs() {
                         </div>
                     </div>
                 </div>
+
+                <div className="values-section">
+                    <div className="values-bg" style={{ backgroundImage: `url(${coreValues})` }}></div>
+                    <h2 className="section-title">Our Core Values</h2>
+                    <div className="values-grid">
+                        {[
+                            {
+                                icon: "⚙️",
+                                title: "Innovation",
+                                desc: "Pushing technical boundaries through creative engineering solutions"
+                            },
+                            {
+                                icon: "🤝",
+                                title: "Teamwork",
+                                desc: "Collaborating across disciplines to build something greater"
+                            },
+                            {
+                                icon: "🌱",
+                                title: "Mentorship",
+                                desc: "Upperclassmen guiding newcomers in STEM skills"
+                            },
+                            {
+                                icon: "🏆",
+                                title: "Gracious Professionalism",
+                                desc: "Competing with integrity and mutual respect"
+                            }
+                        ].map((value, index) => (
+                            <div key={index} className={`value-card delay-${index}`}>
+                                <div className="value-icon">{value.icon}</div>
+                                <h3>{value.title}</h3>
+                                <p>{value.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
             </div>
+
         </div>
     );
 }
