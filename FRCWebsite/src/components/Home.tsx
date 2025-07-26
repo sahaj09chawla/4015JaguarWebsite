@@ -194,12 +194,10 @@ function Home() {
                             currentChar++;
                             if (currentChar === socialText.length) {
                                 clearInterval(typingInterval);
-                                // Logo animation after typing completes
                                 setTimeout(() => {
                                     logos.forEach(logo => {
                                         logo.classList.add('visible');
                                     });
-                                    // Button animation after logos
                                     setTimeout(() => {
                                         if (learnMoreBtn) learnMoreBtn.classList.add('visible');
                                     }, 500);
