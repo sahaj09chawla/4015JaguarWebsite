@@ -239,13 +239,13 @@ function Home() {
                     <button className="nav-arrow right-arrow" onClick={goNext} aria-label="Next Image">&#10095;</button>
                 </div>
             </div>
-
+            <div className="about-button-container">
+                <Link to="/aboutus" className="floating-button about-button">
+                    More About Us
+                </Link>
+            </div>
             <div className="about-container">
-                <div className="about-button-container">
-                    <Link to="/aboutus" className="floating-button about-button">
-                        More About Us
-                    </Link>
-                </div>
+
 
                 <div className="jags-pattern">
                     {[...Array(5)].map((_, i) => (
@@ -254,7 +254,7 @@ function Home() {
                 </div>
 
                 <div className="about-section">
-                    <h2>About Team 4015</h2>
+                    <h2>Our Team</h2>
                     <p>This is where you put text about your team.This is where you put text about your team.This is where you put text about your team.This is where you put text about your team.This is where you put text about your team.This is where you put text about your team.This is where you put text about your team.</p>
                 </div>
             </div>

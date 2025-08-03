@@ -16,14 +16,14 @@
     background-color: #5a2572;
     width: 100%;
     min-height: 100vh;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
 }
 
 .gallery-container {
     position: relative;
     width: 100vw;
     max-width: none;
-    height: 700px;
+    height: 800px;
     margin: 160px 0 0 0;
     overflow: hidden;
     border-radius: 0;
