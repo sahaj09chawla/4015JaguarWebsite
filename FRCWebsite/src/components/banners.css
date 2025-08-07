@@ -6,61 +6,55 @@
     src: url('../fonts/adam.otf') format('opentype');
     unicode-range: U+0000-00FF;
 }
-/* To be standard-compliant, this rule should be applied to *, but for compat it's restricted here. */
-.banners,
-.banners *,
-.banner {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 .banner-parent {
     width: 100%;
     overflow: visible;
     position: relative;
     min-height: 120px;
-    justify-content: center;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
 }
+
 .banner-parent .banners {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 200px;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 150px;
     justify-items: center;
+    align-items: center;
     transform: scale(1);
-    margin: 0;
-    padding: 0;
+    transform-origin: center;
+    margin: 0 auto;
 }
-.banners li,
-.banner {
+
+.banners li {
+    position: relative;
     line-height: 1.2;
     font-family: 'Adam', sans-serif;
     font-size: 0.7rem;
     text-align: center;
-    vertical-align: top;
-    display: inline-block;
-    margin: 0 6px 15px;
-    width: 120px;
-    min-height: 120px;
-    position: relative;
-    background: #0f4bcb;
-    color: white;
-    padding: 10px;
-    white-space: normal;
-    transform: scale(2);
-    display: flex; /* so content centers */
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 120px;
+    min-height: 120px;
+    background: #0f4bcb;
+    color: white;
+    padding: 10px;
+    transform: scale(1.5);
+    transition: transform 0.3s ease;
 }
-.banners img,
-.banner img {
+
+.banners img {
     width: 75px;
     margin-bottom: 5px;
 }
-.banners li:after,
-.banner:after {
+
+.banners li:after {
     content: '';
     position: absolute;
     display: block;
@@ -70,53 +64,47 @@
     top: 100%;
     left: 0;
 }
-.banners li,
-.banners li:after,
-.banner,
-.banner:after {
-    -webkit-filter: drop-shadow(0 10px 5px rgba(0, 0, 0, .1));
-    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur in="SourceAlpha" stdDeviation="5" /><feOffset dx="1" dy="11" result="offsetblur" /><feFlood flood-color="rgba(0,0,0,0.1)" /><feComposite in2="offsetblur" operator="in" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter></svg>#filter');
-    -webkit-filter: drop-shadow(0 10px 5px rgba(0, 0, 0, .1));
-            filter: drop-shadow(0 10px 5px rgba(0, 0, 0, .1));
-}
 
-@media (max-width: 600px) {
+@media (min-width: 2000px) {
     .banner-parent .banners {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (min-width: 1600px) {
-    .banners li {
-        transform: scale(1.87);
-    }
-}
-
-@media (min-width: 1200px) and (max-width: 1599px) {
-    .banners li {
         transform: scale(1.5);
     }
 }
 
-@media (min-width: 900px) and (max-width: 1199px) {
-    .banners li {
+@media (min-width: 1600px) and (max-width: 1999px) {
+    .banner-parent .banners {
         transform: scale(1.3);
     }
 }
 
-@media (min-width: 600px) and (max-width: 899px) {
-    .banners li {
+@media (min-width: 1200px) and (max-width: 1599px) {
+    .banner-parent .banners {
         transform: scale(1.1);
+    }
+}
+
+@media (max-width: 1199px) and (min-width: 900px) {
+    .banner-parent .banners {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-width: 899px) and (min-width: 600px) {
+    .banner-parent .banners {
+        transform: scale(0.7);
+        gap: 150px;
     }
 }
 
 @media (max-width: 599px) {
     .banner-parent .banners {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        max-width: 400px;
+        transform: scale(0.5);
+        gap: 60px;
     }
-    .banners li {
-        transform: scale(1);
-    }
+}
+
+.banners li,
+.banners li:after {
+    -webkit-filter: drop-shadow(0 10px 5px rgba(0, 0, 0, .1));
+    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, .1));
 }
