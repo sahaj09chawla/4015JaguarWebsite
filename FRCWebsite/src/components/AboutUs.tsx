@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState} from 'react';
 import './AboutUs.css';
 import AboutImage from '../assets/AboutImage.png';
 import './banners.css'; // Import the banner styles
@@ -33,6 +33,33 @@ function AboutUs() {
         valueCards.forEach(card => observer.observe(card));
         return () => {
             valueCards.forEach(card => observer.unobserve(card));
+        };
+    }, []);
+
+    useEffect(() => {
+        const banners = document.querySelectorAll<HTMLElement>('.banners li');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target as HTMLElement;
+                        target.style.animationPlayState = 'running';
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        banners.forEach(banner => {
+            const htmlBanner = banner as HTMLElement;
+            htmlBanner.style.animationPlayState = 'paused';
+            observer.observe(htmlBanner);
+        });
+
+        return () => {
+            banners.forEach(banner => {
+                observer.unobserve(banner);
+            });
         };
     }, []);
 
@@ -103,12 +130,14 @@ function AboutUs() {
                         </div>
                         <div className="achievements-grid">
                             <div className="banner-parent" >
-                                <ul className="banners">
-                                    <li><img src={first} alt="FIRST Logo" />2020<br/> DISTRICT FINALIST</li>
-                                    <li><img src={first} alt="FIRST Logo" />2020<br/> AUTONOMOUS AWARD</li>
-                                    <li><img src={first} alt="FIRST Logo" />2022<br/> DISTRICT WINNERS</li>
-                                    <li><img src={first} alt="FIRST Logo" />2024<br/> GRACIOUS PROFESSIONALISM AWARD</li>
-                                </ul>
+                                <div className="scalable-banner-container">
+                                    <ul className="banners">
+                                        <li><img src={first} alt="FIRST Logo" />2020<br/> DISTRICT FINALIST</li>
+                                        <li><img src={first} alt="FIRST Logo" />2020<br/> AUTONOMOUS AWARD</li>
+                                        <li><img src={first} alt="FIRST Logo" />2022<br/> DISTRICT WINNERS</li>
+                                        <li><img src={first} alt="FIRST Logo" />2024<br/> GRACIOUS PROFESSIONALISM AWARD</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
