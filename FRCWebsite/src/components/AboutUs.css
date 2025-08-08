@@ -45,7 +45,6 @@
     z-index: 2;
 }
 
-/* Content Section */
 .about-content {
     background-color: rgba(80, 30, 100, 0.85);
     border-radius: 12px;
@@ -348,8 +347,8 @@
     font-family: 'Norwester', sans-serif;
     font-size: 40px;
     text-align: center;
-    margin-top: -13.5vw;
     z-index: 1;
+    margin-top: clamp(-15vw, -13.5vw, -10vw);
 }
 
 .subteams-container {
@@ -361,6 +360,7 @@
     margin-right: -50vw;
     overflow: hidden;
     margin-top: -1px;
+    height: auto;
 }
 
 .subteams-image {
@@ -371,8 +371,8 @@
     object-position: center;
     display: block;
     position: relative;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 80%);
-    margin-bottom: -20%;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%);
+    margin-bottom: -10%;
 }
 
 .subteams-image-container {
@@ -389,7 +389,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     z-index: 1;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 80%);
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%);
 }
 
 .subteams-image::after {
@@ -401,7 +401,7 @@
     height: 100%;
     background-color: rgba(100, 30, 150, 0.3);
     z-index: 1;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 80%);
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%);
 }
 
 .subteams-content {
@@ -529,5 +529,98 @@
 
     .subteams-content {
         top: 45%;
+    }
+}
+
+@media (min-width: 2560px) {
+    .subteams-image {
+        min-height: clamp(600px, 40vw, 800px);
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 85%);
+    }
+    .subteams-image-overlay,
+    .subteams-image::after {
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 85%);
+    }
+    .subteams-content {
+        top: 45%;
+    }
+    .subteams-title-strip {
+        margin-top: clamp(-12vw, -10vw, -8vw);
+    }
+}
+
+@media (min-width: 1920px) and (max-width: 2559px) {
+
+}
+
+@media (min-width: 1440px) and (max-width: 1919px) {
+    .subteams-image {
+        min-height: clamp(450px, 45vw, 650px);
+    }
+    .subteams-content {
+        top: 52%;
+    }
+    .subteams-title-strip {
+        margin-top: clamp(-14vw, -12vw, -10vw);
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+    /* Tablets landscape to HD (1024px-1439px) */
+    .subteams-image {
+        min-height: clamp(400px, 50vw, 600px);
+        clip-path: polygon(0 0, 100% 0, 100% 92%, 0 92%);
+    }
+    .subteams-image-overlay,
+    .subteams-image::after {
+        clip-path: polygon(0 0, 100% 0, 100% 92%, 0 92%);
+    }
+    .subteams-content {
+        top: 55%;
+    }
+    .subteams-title-strip {
+        margin-top: clamp(-16vw, -14vw, -12vw);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .subteams-image {
+        min-height: clamp(350px, 55vw, 550px);
+    }
+    .subteams-content {
+        top: 60%;
+    }
+    .subteam-button {
+        min-height: 220px;
+    }
+}
+
+@media (max-width: 767px) {
+    .subteams-image {
+        min-height: clamp(300px, 60vw, 500px);
+        clip-path: polygon(0 0, 100% 0, 100% 95%, 0 95%);
+    }
+    .subteams-image-overlay,
+    .subteams-image::after {
+        clip-path: polygon(0 0, 100% 0, 100% 95%, 0 95%);
+    }
+    .subteams-content {
+        top: 65%;
+    }
+    .subteam-button {
+        min-height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .subteams-image {
+        min-height: clamp(250px, 70vw, 400px);
+    }
+    .subteams-content {
+        top: 70%;
+    }
+    .subteam-button {
+        min-height: 150px;
+        font-size: clamp(1.4rem, 5vw, 1.8rem);
     }
 }
