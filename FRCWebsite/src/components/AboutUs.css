@@ -241,6 +241,7 @@
     margin-right: -50vw;
     overflow: hidden;
     margin-top: 0;
+    margin-bottom: -1px;
 }
 
 .achievements-container {
@@ -332,5 +333,201 @@
 
     .about-image {
         height: 250px;
+    }
+}
+
+.subteams-title-strip {
+    background-color: rgba(0, 0, 0, 1);
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: clamp(20px, 3vw, 30px) 0;
+    font-family: 'Norwester', sans-serif;
+    font-size: 40px;
+    text-align: center;
+    margin-top: -13.5vw;
+    z-index: 1;
+}
+
+.subteams-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    overflow: hidden;
+    margin-top: -1px;
+}
+
+.subteams-image {
+    width: 100%;
+    height: auto;
+    min-height: clamp(500px, 50vw, 700px);
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 80%);
+    margin-bottom: -20%;
+}
+
+.subteams-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.subteams-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 80%);
+}
+
+.subteams-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(100, 30, 150, 0.3);
+    z-index: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 80%);
+}
+
+.subteams-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    z-index: 2;
+}
+
+.subteams-textbox {
+    background-color: rgba(80, 30, 100, 0.85);
+    border-radius: 12px;
+    padding: clamp(25px, 3vw, 35px);
+    margin-bottom: clamp(25px, 3vw, 35px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    color: white;
+    font-family: 'Norwester', sans-serif;
+    width: 85%;
+    max-width: 1000px;
+    margin: 0 auto clamp(25px, 3vw, 35px);
+}
+
+.subteams-textbox p {
+    font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+.subteams-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(350px, 1fr));
+    gap: clamp(25px, 3vw, 35px);
+    width: 85%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.subteam-button {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: clamp(25px, 2.5vw, 35px) clamp(10px, 2vw, 20px);
+    font-family: 'Norwester', sans-serif;
+    font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+.subteam-button.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.subteam-button img {
+    width: clamp(80px, 9vw, 100px);
+    height: clamp(80px, 9vw, 100px);
+    margin-top: 20px;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.4s ease-out 0.2s;
+}
+
+.subteam-button.visible img {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+.subteam-button:nth-child(1) { transition-delay: 0.1s; }
+.subteam-button:nth-child(1) img { transition-delay: 0.3s; }
+.subteam-button:nth-child(2) { transition-delay: 0.2s; }
+.subteam-button:nth-child(2) img { transition-delay: 0.4s; }
+.subteam-button:nth-child(3) { transition-delay: 0.3s; }
+.subteam-button:nth-child(3) img { transition-delay: 0.5s; }
+.subteam-button:nth-child(4) { transition-delay: 0.4s; }
+.subteam-button:nth-child(4) img { transition-delay: 0.6s; }
+
+.subteam-button span {
+    display: none;
+}
+
+.subteam-button:hover {
+    background-color: #5a2572;
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    .subteams-title-strip h2 {
+        font-size: clamp(2rem, 3vw, 2.5rem);
+    }
+
+    .subteams-grid {
+        grid-template-columns: 1fr;
+        width: 90%;
+    }
+
+    .subteam-button {
+        min-height: 180px;
+        font-size: clamp(1.6rem, 1.8vw, 1.8rem);
+        padding: clamp(15px, 2vw, 20px);
+    }
+
+    .subteams-textbox {
+        width: 90%;
+        padding: clamp(20px, 2.5vw, 25px);
+    }
+
+    .subteams-content {
+        top: 45%;
     }
 }

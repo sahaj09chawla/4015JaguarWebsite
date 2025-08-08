@@ -4,6 +4,11 @@ import AboutImage from '../assets/AboutImage.png';
 import './banners.css'; // Import the banner styles
 import achievement from '../assets/achievement.png';
 import first from '../assets/first.svg';
+import subteam from '../assets/subteams.png';
+import mechanical from '../assets/mechanical-icon.png';
+import electrical from '../assets/electrical-icon.png';
+import design from '../assets/design-icon.png';
+import programming from '../assets/programming-icon.png';
 
 function AboutUs() {
     const [displayedText, setDisplayedText] = useState('');
@@ -60,6 +65,29 @@ function AboutUs() {
             banners.forEach(banner => {
                 observer.unobserve(banner);
             });
+        };
+    }, []);
+
+    useEffect(() => {
+        const buttons = document.querySelectorAll('.subteam-button');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            }
+        );
+
+        buttons.forEach(button => observer.observe(button));
+
+        return () => {
+            buttons.forEach(button => observer.unobserve(button));
         };
     }, []);
 
@@ -139,6 +167,46 @@ function AboutUs() {
                                     </ul>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="subteams-title-strip">
+                    <h2>ABOUT OUR SUBTEAMS</h2>
+                </div>
+
+                <div className="subteams-container">
+                    <div className="subteams-image-container">
+                        <img src={subteam} alt="Subteams" className="subteams-image" />
+                        <div className="subteams-image-overlay"></div>
+                    </div>
+
+                    <div className="subteams-content">
+                        <div className="subteams-textbox">
+                            <p>
+                                Our team is divided into specialized subteams, each focusing on different aspects of our robot's
+                                development. This structure allows members to develop deep expertise while collaborating across
+                                disciplines to create a cohesive final product.
+                            </p>
+                        </div>
+
+                        <div className="subteams-grid">
+                            <button className="subteam-button">
+                                Mechanical
+                                <img src={mechanical} alt="Mechanical" />
+                            </button>
+                            <button className="subteam-button">
+                                Electrical
+                                <img src={electrical} alt="Electrical" />
+                            </button>
+                            <button className="subteam-button">
+                                Design
+                                <img src={design} alt="Design" />
+                            </button>
+                            <button className="subteam-button">
+                                Programming
+                                <img src={programming} alt="Programming" />
+                            </button>
                         </div>
                     </div>
                 </div>
