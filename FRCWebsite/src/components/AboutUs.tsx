@@ -10,8 +10,122 @@ import electrical from '../assets/electrical-icon.png';
 import design from '../assets/design-icon.png';
 import programming from '../assets/programming-icon.png';
 
+import './modals/MechanicalModal.css';
+import './modals/ElectricalModal.css';
+import './modals/DesignModal.css';
+import './modals/ProgrammingModal.css';
+
 function AboutUs() {
     const [displayedText, setDisplayedText] = useState('');
+    const [activeModal, setActiveModal] = useState<string | null>(null);
+    const [modalTitle, setModalTitle] = useState('');
+
+    const openModal = (modalName: string, title: string) => {
+        document.body.classList.add(`${modalName}-modal-open`);
+        setActiveModal(modalName);
+        setModalTitle(title);
+    };
+
+    const closeModal = () => {
+        document.body.classList.remove(`${activeModal}-modal-open`);
+        setActiveModal(null);
+        setModalTitle('');
+    };
+
+    const ModalWrapper = ({ children, modalName }: { children: React.ReactNode, modalName: string }) => {
+        return (
+            <div className={`${modalName}-modal-overlay`} onClick={closeModal}>
+                <div className={`${modalName}-modal-content`} onClick={e => e.stopPropagation()}>
+                    {children}
+                    <button className="modal-close" onClick={closeModal}>&times;</button>
+                </div>
+            </div>
+        );
+    };
+
+    const MechanicalModal = () => {
+        const [displayedTitle, setDisplayedTitle] = useState('');
+
+        useEffect(() => {
+            let currentChar = 0;
+            const typingInterval = setInterval(() => {
+                setDisplayedTitle(modalTitle.slice(0, currentChar + 1));
+                currentChar++;
+                if (currentChar === modalTitle.length) clearInterval(typingInterval);
+            }, 100);
+
+            return () => clearInterval(typingInterval);
+        }, [modalTitle]);
+
+        return (
+            <ModalWrapper modalName="mechanical">
+                <h2>{displayedTitle}</h2>
+            </ModalWrapper>
+        );
+    };
+
+    const ElectricalModal = () => {
+        const [displayedTitle, setDisplayedTitle] = useState('');
+
+        useEffect(() => {
+            let currentChar = 0;
+            const typingInterval = setInterval(() => {
+                setDisplayedTitle(modalTitle.slice(0, currentChar + 1));
+                currentChar++;
+                if (currentChar === modalTitle.length) clearInterval(typingInterval);
+            }, 100);
+
+            return () => clearInterval(typingInterval);
+        }, [modalTitle]);
+
+        return (
+            <ModalWrapper modalName="electrical">
+                <h2>{displayedTitle}</h2>
+            </ModalWrapper>
+        );
+    };
+
+    const DesignModal = () => {
+        const [displayedTitle, setDisplayedTitle] = useState('');
+
+        useEffect(() => {
+            let currentChar = 0;
+            const typingInterval = setInterval(() => {
+                setDisplayedTitle(modalTitle.slice(0, currentChar + 1));
+                currentChar++;
+                if (currentChar === modalTitle.length) clearInterval(typingInterval);
+            }, 100);
+
+            return () => clearInterval(typingInterval);
+        }, [modalTitle]);
+
+        return (
+            <ModalWrapper modalName="design">
+                <h2>{displayedTitle}</h2>
+            </ModalWrapper>
+        );
+    };
+
+    const ProgrammingModal = () => {
+        const [displayedTitle, setDisplayedTitle] = useState('');
+
+        useEffect(() => {
+            let currentChar = 0;
+            const typingInterval = setInterval(() => {
+                setDisplayedTitle(modalTitle.slice(0, currentChar + 1));
+                currentChar++;
+                if (currentChar === modalTitle.length) clearInterval(typingInterval);
+            }, 100);
+
+            return () => clearInterval(typingInterval);
+        }, [modalTitle]);
+
+        return (
+            <ModalWrapper modalName="programming">
+                <h2>{displayedTitle}</h2>
+            </ModalWrapper>
+        );
+    };
 
     useEffect(() => {
         let currentChar = 0;
@@ -191,23 +305,40 @@ function AboutUs() {
                         </div>
 
                         <div className="subteams-grid">
-                            <button className="subteam-button">
+                            <button
+                                className="subteam-button"
+                                onClick={() => openModal('mechanical', 'About Mechanical Team')}
+                            >
                                 Mechanical
                                 <img src={mechanical} alt="Mechanical" />
                             </button>
-                            <button className="subteam-button">
+                            <button
+                                className="subteam-button"
+                                onClick={() => openModal('electrical', 'About Electrical Team')}
+                            >
                                 Electrical
                                 <img src={electrical} alt="Electrical" />
                             </button>
-                            <button className="subteam-button">
+                            <button
+                                className="subteam-button"
+                                onClick={() => openModal('design', 'About Design Team')}
+                            >
                                 Design
                                 <img src={design} alt="Design" />
                             </button>
-                            <button className="subteam-button">
+                            <button
+                                className="subteam-button"
+                                onClick={() => openModal('programming', 'About Programming Team')}
+                            >
                                 Programming
                                 <img src={programming} alt="Programming" />
                             </button>
                         </div>
+
+                        {activeModal === 'mechanical' && <MechanicalModal />}
+                        {activeModal === 'electrical' && <ElectricalModal />}
+                        {activeModal === 'design' && <DesignModal />}
+                        {activeModal === 'programming' && <ProgrammingModal />}
                     </div>
                 </div>
             </div>
