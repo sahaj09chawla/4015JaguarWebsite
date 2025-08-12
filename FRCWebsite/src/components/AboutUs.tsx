@@ -108,47 +108,6 @@ function AboutUs() {
         };
     }, []);
 
-    // const TypingButton = () => {
-    //     const [displayedText, setDisplayedText] = useState('');
-    //     const [typingComplete, setTypingComplete] = useState(false);
-    //     const navigate = useNavigate(); // Initialize navigate function
-    //     const fullText = "Meet Our Students";
-    //
-    //     // Typing animation effect
-    //     useEffect(() => {
-    //         let currentChar = 0;
-    //         const typingInterval = setInterval(() => {
-    //             setDisplayedText(fullText.slice(0, currentChar + 1));
-    //             currentChar++;
-    //             if (currentChar === fullText.length) {
-    //                 clearInterval(typingInterval);
-    //                 setTypingComplete(true);
-    //             }
-    //         }, 120); // Adjust typing speed (milliseconds per character)
-    //
-    //         return () => clearInterval(typingInterval);
-    //     }, []);
-    //
-    //     // Handle click with navigation
-    //     const handleClick = () => {
-    //         navigate('/students'); // Programmatic navigation
-    //     };
-    //
-    //     return (
-    //         <div className="typing-button-container">
-    //             <button
-    //                 onClick={handleClick}
-    //                 className={`typing-button ${typingComplete ? 'complete' : ''}`}
-    //                 aria-label="Learn more about our students"
-    //                 disabled={!typingComplete} // Disable until animation completes
-    //             >
-    //                 {displayedText}
-    //                 <span className={`typing-button-border ${typingComplete ? 'active' : ''}`}></span>
-    //             </button>
-    //         </div>
-    //     );
-    // };
-
     return (
         <div className="about-page">
             <div className="jags-pattern-about">
@@ -318,7 +277,6 @@ function AboutUs() {
                             </button>
                         </div>
                     </div>
-                    {/*<TypingButton />*/}
                 </div>
             </div>
         </div>
