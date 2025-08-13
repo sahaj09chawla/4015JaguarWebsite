@@ -1,8 +1,7 @@
 import { useEffect, useState} from 'react';
-// import { useNavigate } from 'react-router-dom';
 import './AboutUs.css';
 import AboutImage from '../assets/AboutImage.png';
-import './banners.css'; // Import the banner styles
+import './banners.css';
 import achievement from '../assets/achievement.png';
 import first from '../assets/first.svg';
 import subteam from '../assets/subteams.png';
@@ -107,6 +106,35 @@ function AboutUs() {
             buttons.forEach(button => observer.unobserve(button));
         };
     }, []);
+
+    const TypingButton = () => {
+        const [displayedText, setDisplayedText] = useState('');
+        const [typingComplete, setTypingComplete] = useState(false);
+        const fullText = "Meet Our Students";
+
+        useEffect(() => {
+            let currentChar = 0;
+            const typingInterval = setInterval(() => {
+                setDisplayedText(fullText.slice(0, currentChar + 1));
+                currentChar++;
+                if (currentChar === fullText.length) {
+                    clearInterval(typingInterval);
+                    setTypingComplete(true);
+                }
+            }, 120);
+
+            return () => clearInterval(typingInterval);
+        }, []);
+
+        return (
+            <div className="typing-button-container">
+                <a href="/students" className={`typing-button ${typingComplete ? 'complete' : ''}`} style={{ color: 'white' }}>
+                    {displayedText}
+                    <span className={`typing-button-border ${typingComplete ? 'active' : ''}`}></span>
+                </a>
+            </div>
+        );
+    };
 
     return (
         <div className="about-page">
@@ -276,6 +304,11 @@ function AboutUs() {
                                 </div>
                             </button>
                         </div>
+                    </div>
+                </div>
+                <div className="typing-button-section">
+                    <div className="typing-button-wrapper">
+                        <TypingButton />
                     </div>
                 </div>
             </div>

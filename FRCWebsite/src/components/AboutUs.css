@@ -1,7 +1,6 @@
 .about-page {
     background-color: #5a2572;
     min-height: 100vh;
-    padding-top: 150px;
     position: relative;
     overflow-x: hidden;
 }
@@ -107,7 +106,6 @@
     margin-bottom: clamp(15px, 1.5vw, 25px);
 }
 
-/* Values Section */
 .values-wrapper {
     position: relative;
     width: 100%;
@@ -419,7 +417,6 @@
     background-color: rgba(80, 30, 100, 0.85);
     border-radius: 12px;
     padding: clamp(25px, 3vw, 35px);
-    margin-bottom: clamp(25px, 3vw, 35px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     color: white;
     font-family: 'Norwester', sans-serif;
@@ -441,7 +438,7 @@
     width: 85%;
     max-width: 1100px;
     margin: 0 auto;
-    erspective: 1000px;
+    perspective: 1000px;
     perspective-origin: 50% 50%;
 }
 
@@ -691,5 +688,116 @@
     .subteam-button {
         min-height: 150px;
         font-size: clamp(1.4rem, 5vw, 1.8rem);
+    }
+}
+
+/* Final Typing Button Section */
+.typing-button-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: #000;
+    padding: 40px 0;
+    margin-top: -1px;
+    z-index: 2; /* Ensure it stays above any background elements */
+}
+
+.typing-button-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.typing-button-container {
+    display: inline-block;
+    position: relative;
+}
+
+.typing-button {
+    font-family: 'Norwester', sans-serif;
+    color: white; /* Always white text */
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    background: transparent;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    position: relative;
+    min-width: 280px;
+    transition: all 0.3s ease;
+    text-decoration: none; /* Remove underline */
+    display: inline-block;
+}
+
+.typing-button-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: -1; /* Keep border behind text */
+}
+
+/* Border animation */
+@keyframes drawBorder {
+    0% { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+}
+
+.typing-button-border.active {
+    border-color: rgba(255, 255, 255, 0.3);
+    animation: drawBorder 1s ease-out forwards;
+}
+
+/* Hover effects - purple background only */
+.typing-button:hover {
+    transform: translateY(-3px);
+}
+
+.typing-button:hover .typing-button-border {
+    background-color: rgba(90, 37, 114, 0.3); /* Your exact purple color */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Cursor animation */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.typing-button::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: #9370DB;
+}
+
+.typing-button.complete::after {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .typing-button-section {
+        padding: 30px 0;
+    }
+
+    .typing-button {
+        min-width: 240px;
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .typing-button {
+        min-width: 200px;
+        font-size: clamp(1.3rem, 4vw, 1.5rem);
     }
 }
