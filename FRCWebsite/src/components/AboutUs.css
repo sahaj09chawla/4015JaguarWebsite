@@ -691,7 +691,6 @@
     }
 }
 
-/* Final Typing Button Section */
 .typing-button-section {
     width: 100vw;
     position: relative;
@@ -702,7 +701,7 @@
     background-color: #000;
     padding: 40px 0;
     margin-top: -1px;
-    z-index: 2; /* Ensure it stays above any background elements */
+    z-index: 2;
 }
 
 .typing-button-wrapper {
@@ -719,7 +718,7 @@
 
 .typing-button {
     font-family: 'Norwester', sans-serif;
-    color: white; /* Always white text */
+    color: white;
     font-size: clamp(1.5rem, 3vw, 2rem);
     background: transparent;
     border: none;
@@ -728,7 +727,7 @@
     position: relative;
     min-width: 280px;
     transition: all 0.3s ease;
-    text-decoration: none; /* Remove underline */
+    text-decoration: none;
     display: inline-block;
 }
 
@@ -742,10 +741,9 @@
     border-radius: 8px;
     pointer-events: none;
     transition: all 0.3s ease;
-    z-index: -1; /* Keep border behind text */
+    z-index: -1;
 }
 
-/* Border animation */
 @keyframes drawBorder {
     0% { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
     100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
@@ -756,13 +754,12 @@
     animation: drawBorder 1s ease-out forwards;
 }
 
-/* Hover effects - purple background only */
 .typing-button:hover {
     transform: translateY(-3px);
 }
 
 .typing-button:hover .typing-button-border {
-    background-color: rgba(90, 37, 114, 0.3); /* Your exact purple color */
+    background-color: rgba(90, 37, 114, 0.3);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
@@ -783,7 +780,6 @@
     display: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .typing-button-section {
         padding: 30px 0;
