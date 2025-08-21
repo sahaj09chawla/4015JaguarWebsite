@@ -87,13 +87,13 @@
     gap: 0;
 }
 
-.gallery-image {
+.gallery-image1 {
     margin: 0;
     object-fit: cover;
     transition: filter 0.3s ease;
 }
 
-.gallery-image:hover {
+.gallery-image1:hover {
     filter: brightness(50%) sepia(30%) hue-rotate(270deg);
 }
 

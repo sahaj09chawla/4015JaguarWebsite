@@ -1,0 +1,343 @@
+.sponsors-page {
+    background-color: #5a2572;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Norwester', sans-serif;
+    color: white;
+    padding-top: 100px;
+}
+
+.sponsors-pattern {
+    position: absolute;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    padding-top: 10vw;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.sponsors-pattern .jags-line {
+    width: 200vw;
+    white-space: nowrap;
+    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+    font-weight: bold;
+    color: rgba(255,255,255,0.1);
+    animation: scroll-horizontal 80s linear infinite;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.sponsors-pattern .jags-line:nth-child(even) {
+    animation-direction: reverse;
+}
+
+.sponsors-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.sponsors-content {
+    background-color: rgba(80, 30, 100, 0.85);
+    border-radius: 12px;
+    padding: clamp(30px, 4vw, 60px);
+    margin: 0 clamp(20px, 3vw, 40px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sponsors-header {
+    font-size: clamp(3rem, 5vw, 5rem);
+    color: white;
+    font-family: 'Norwester', sans-serif;
+    text-align: center;
+    margin-bottom: clamp(20px, 2vw, 30px);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 0 clamp(15px, 2vw, 30px);
+}
+
+.typing-cursor {
+    animation: blink 1s step-end infinite;
+    color: #9370DB;
+    margin-left: 5px;
+}
+
+.sponsors-info-box {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 1.6;
+    font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+    background-color: rgba(80, 30, 100, 0);
+}
+
+.sponsorship-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.sponsorship-section {
+    display: flex;
+    gap: 40px;
+    padding: 30px;
+    background-color: rgba(90, 37, 114, 0.7);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.sponsorship-text {
+    flex: 1;
+    color: white;
+    padding: 20px;
+    background-color: rgba(90, 37, 114, 0.5);
+    border-radius: 8px;
+}
+
+.sponsorship-text h2 {
+    color: white;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    font-family: 'Norwester', sans-serif;
+}
+
+.sponsorship-text p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.sponsorship-text ul {
+    padding-left: 20px;
+    color: white;
+}
+
+.sponsorship-text li {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.pdf-viewer-container {
+    flex: 1;
+    min-width: 40%;
+    background-color: rgba(90, 37, 114, 0.5);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.pdf-viewer {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 15px 0;
+    overflow: auto;
+    max-height: 600px;
+    display: flex;
+    justify-content: center;
+    background-color: #f5f5f5;
+    min-height: 400px;
+}
+
+.pdf-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.pdf-controls button {
+    background-color: #9370DB;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Norwester', sans-serif;
+}
+
+.pdf-controls button:hover {
+    background-color: #7a1fa2;
+}
+
+.download-button {
+    margin-left: auto;
+    background-color: #5a2572;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-family: 'Norwester', sans-serif;
+}
+
+.download-button:hover {
+    background-color: #7a1fa2;
+}
+
+.pdf-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    flex-wrap: wrap;
+}
+
+.pdf-pagination button {
+    background-color: #9370DB;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Norwester', sans-serif;
+}
+
+.pdf-pagination button:hover {
+    background-color: #7a1fa2;
+}
+
+.pdf-pagination button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+.pdf-loading, .pdf-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    color: #333;
+    font-size: 1.2rem;
+    background-color: #f5f5f5;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pdf-error {
+    color: #d32f2f;
+}
+
+.retry-button {
+    background-color: #9370DB;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Norwester', sans-serif;
+}
+
+.retry-button:hover {
+    background-color: #7a1fa2;
+}
+
+.react-pdf__Document {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.react-pdf__Page {
+    max-width: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+}
+
+.react-pdf__Page__canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+
+
+@media (max-width: 992px) {
+    .sponsorship-section {
+        flex-direction: column;
+    }
+
+    .pdf-viewer-container {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .sponsors-content {
+        padding: 30px 20px;
+    }
+
+    .sponsorship-section {
+        padding: 20px;
+    }
+
+    .sponsorship-text h2 {
+        font-size: 1.8rem;
+    }
+
+    .sponsorship-text p {
+        font-size: 1.1rem;
+    }
+
+    .sponsorship-text li {
+        font-size: 1rem;
+    }
+
+    .pdf-controls {
+        flex-wrap: wrap;
+    }
+
+    .pdf-viewer {
+        max-height: 400px;
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sponsors-page {
+        padding-top: 120px;
+    }
+
+    .sponsors-header {
+        font-size: 2.5rem;
+    }
+
+    .pdf-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .download-button {
+        margin-left: 0;
+    }
+
+    .pdf-pagination {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .pdf-viewer {
+        min-height: 250px;
+    }
+}

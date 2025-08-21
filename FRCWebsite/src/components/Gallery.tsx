@@ -114,7 +114,7 @@ function Gallery() {
                         {row.map((img, i) => {
                             const index = flatImages.findIndex((f) => f.src === img.src);
                             return (
-                                <img key={i} src={img.src} style={{ width: `${img.width}px`, height: `${img.height}px` }} className="gallery-image" alt={`Gallery item ${rowIndex}-${i}`} onClick={() => openModal(index)}/>
+                                <img key={i} src={img.src} style={{ width: `${img.width}px`, height: `${img.height}px` }} className="gallery-image1" alt={`Gallery item ${rowIndex}-${i}`} onClick={() => openModal(index)}/>
                             );
                         })}
                     </div>
@@ -127,7 +127,7 @@ function Gallery() {
                     <img src={flatImages[currentIndex].src} className="gallery-modal-image" alt="Modal" onClick={(e) => e.stopPropagation()}/>
                     <button className="gallery-modal-prev"
                         onClick={(e) => {
-                            e.stopPropagation(); // prevent closing the modal
+                            e.stopPropagation();
                             prevImage();
                         }}
                     >
