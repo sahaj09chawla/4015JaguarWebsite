@@ -1,29 +1,10 @@
 .students-page {
     background-color: #5a2572;
     min-height: 100vh;
-    padding-top: 100px;
     position: relative;
     overflow-x: hidden;
+    padding-top: 100px;
 }
-
-.students-header-container {
-    position: relative;
-    width: 100%;
-    height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-}
-
-.students-header {
-    font-family: 'Norwester', sans-serif;
-    color: white;
-    font-size: clamp(3rem, 5vw, 5rem);
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
 
 .students-pattern {
     position: absolute;
@@ -56,19 +37,284 @@
     animation-direction: reverse;
 }
 
+.students-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.students-content {
+    background-color: rgba(80, 30, 100, 0.85);
+    border-radius: 12px;
+    padding: clamp(30px, 4vw, 60px);
+    margin: 0 clamp(20px, 3vw, 40px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.students-header-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: clamp(20px, 2vw, 30px);
+}
+
+.students-header {
+    font-family: 'Norwester', sans-serif;
+    color: white;
+    font-size: clamp(3rem, 5vw, 5rem);
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.typing-cursor {
+    animation: blink 1s step-end infinite;
+    color: #9370DB;
+    margin-left: 5px;
+}
+
+.students-description {
+    background-color: rgba(90, 37, 114, 0.7);
+    font-family: 'Norwester', sans-serif;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 0 auto 50px;
+    max-width: 1000px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.students-description p {
+    color: white;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 25px;
+    margin: 0 auto 60px;
+}
+
+.student-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+}
+
+.student-image-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #9370DB;
+    margin-bottom: 15px;
+    background-color: #fff;
+}
+
+.student-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.student-info {
+    color: white;
+}
+
+.student-name {
+    font-family: 'Norwester', sans-serif;
+    font-size: 1rem;
+    margin: 0 0 5px 0;
+    color: white;
+}
+
+.student-role {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #d8bfd8;
+}
+
+.alumni-section {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.alumni-header {
+    font-family: 'Norwester', sans-serif;
+    color: white;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+}
+
+.alumni-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 25px;
+    margin: 0 auto;
+}
+
+.alumni-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.alumni-card:hover {
+    transform: translateY(-5px);
+}
+
+.alumni-image-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #9370DB;
+    margin-bottom: 15px;
+    background-color: #fff;
+}
+
+.alumni-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.alumni-info {
+    color: white;
+}
+
+.alumni-name {
+    font-family: 'Norwester', sans-serif;
+    font-size: 1rem;
+    margin: 0 0 5px 0;
+    color: white;
+}
+
+.alumni-role {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #d8bfd8;
+}
 
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
 
-.students-header::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    margin-left: 5px;
-    color: #9370DB;
+@media (max-width: 1600px) {
+    .students-grid,
+    .alumni-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
 }
 
-.students-header.complete::after {
-    display: none;
+@media (max-width: 1200px) {
+    .students-grid,
+    .alumni-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .students-grid,
+    .alumni-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .students-content {
+        padding: 30px 20px;
+    }
+
+    .students-description {
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    .students-description p {
+        font-size: 1.1rem;
+    }
+
+    .students-grid,
+    .alumni-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .student-image-container,
+    .alumni-image-container {
+        width: 90px;
+        height: 90px;
+    }
+
+    .alumni-section {
+        margin-top: 30px;
+        padding-top: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .students-page {
+        padding-top: 80px;
+    }
+
+    .students-content {
+        padding: 0 15px 40px;
+        margin: 0 15px;
+    }
+
+    .students-description {
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+
+    .students-grid,
+    .alumni-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .student-image-container,
+    .alumni-image-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .student-name,
+    .alumni-name {
+        font-size: 0.9rem;
+    }
+
+    .student-role,
+    .alumni-role {
+        font-size: 0.8rem;
+    }
+
+    .alumni-header {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 400px) {
+    .students-grid,
+    .alumni-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
