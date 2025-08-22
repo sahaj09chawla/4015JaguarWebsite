@@ -3,6 +3,10 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import './Sponsor.css';
+import Apple from '../assets/apple_logo.png';
+import CGI from '../assets/cgi_logo.png';
+import WellLife from '../assets/wellLife_logo.png';
+import Laser from '../assets/pro_laser_cut_logo.png';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
@@ -19,8 +23,12 @@ function Sponsors() {
     const [pdfError2, setPdfError2] = useState(false);
     const [isLoading1, setIsLoading1] = useState(true);
     const [isLoading2, setIsLoading2] = useState(true);
+    const [pastSponsorsText, setPastSponsorsText] = useState('');
+    const [pastSponsorsTypingComplete, setPastSponsorsTypingComplete] = useState(false);
+    const [visibleLogos, setVisibleLogos] = useState([false, false, false, false]);
     const containerRef1 = useRef<HTMLDivElement>(null);
     const containerRef2 = useRef<HTMLDivElement>(null);
+    const sponsorsSectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         let currentChar = 0;
@@ -35,6 +43,49 @@ function Sponsors() {
         }, 150);
 
         return () => clearInterval(typingInterval);
+    }, []);
+
+    useEffect(() => {
+        if (typingComplete) {
+            let currentChar = 0;
+            const fullText = "Past Sponsors";
+            const typingInterval = setInterval(() => {
+                setPastSponsorsText(fullText.slice(0, currentChar + 1));
+                currentChar++;
+                if (currentChar === fullText.length) {
+                    clearInterval(typingInterval);
+                    setPastSponsorsTypingComplete(true);
+                }
+            }, 150);
+
+            return () => clearInterval(typingInterval);
+        }
+    }, [typingComplete]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => setVisibleLogos([true, false, false, false]), 200);
+                        setTimeout(() => setVisibleLogos([true, true, false, false]), 400);
+                        setTimeout(() => setVisibleLogos([true, true, true, false]), 600);
+                        setTimeout(() => setVisibleLogos([true, true, true, true]), 800);
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        if (sponsorsSectionRef.current) {
+            observer.observe(sponsorsSectionRef.current);
+        }
+
+        return () => {
+            if (sponsorsSectionRef.current) {
+                observer.unobserve(sponsorsSectionRef.current);
+            }
+        };
     }, []);
 
     const onDocumentLoadSuccess1 = ({ numPages }: { numPages: number }) => {
@@ -93,7 +144,7 @@ function Sponsors() {
             <div className="sponsors-pattern">
                 {[...Array(30)].map((_, i) => (
                     <div key={`sponsors-line-${i}`} className="jags-line">
-                        {"JAGS ".repeat(40)}
+                        {"JAGS ".repeat(15)}
                     </div>
                 ))}
             </div>
@@ -196,6 +247,28 @@ function Sponsors() {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div className="past-sponsors-section" ref={sponsorsSectionRef}>
+                <div className="past-sponsors-header">
+                    {pastSponsorsText}
+                    {!pastSponsorsTypingComplete && <span className="typing-cursor">|</span>}
+                </div>
+            </div>
+
+            <div className="sponsors-grid">
+                <div className={`sponsor-logo ${visibleLogos[0] ? 'visible' : ''}`}>
+                    <img src={Apple} alt="Apple" />
+                </div>
+                <div className={`sponsor-logo ${visibleLogos[1] ? 'visible' : ''}`}>
+                    <img src={CGI} alt="CGI" />
+                </div>
+                <div className={`sponsor-logo ${visibleLogos[2] ? 'visible' : ''}`}>
+                    <img src={WellLife} alt="WellLife" />
+                </div>
+                <div className={`sponsor-logo ${visibleLogos[3] ? 'visible' : ''}`}>
+                    <img src={Laser} alt="Pro Laser Cut" />
                 </div>
             </div>
         </div>
