@@ -4,7 +4,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import './Sponsor.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 function Sponsors() {
     const [numPages1, setNumPages1] = useState<number | null>(null);
@@ -73,24 +73,18 @@ function Sponsors() {
                 a.click();
                 a.remove();
                 window.URL.revokeObjectURL(blobUrl);
-            })
-            .catch(error => {
-                console.error('Error downloading PDF:', error);
-                window.open(url, '_blank');
             });
     };
 
     const retryLoadPdf1 = () => {
         setIsLoading1(true);
         setPdfError1(false);
-        // Force re-render by updating state
         setPageNumber1(prev => prev);
     };
 
     const retryLoadPdf2 = () => {
         setIsLoading2(true);
         setPdfError2(false);
-        // Force re-render by updating state
         setPageNumber2(prev => prev);
     };
 
@@ -148,17 +142,8 @@ function Sponsors() {
                                             <button onClick={retryLoadPdf1} className="retry-button">Retry</button>
                                         </div>
                                     ) : (
-                                        <Document
-                                            file="/documents/SponsorshipPackage2025-2026.pdf"
-                                            onLoadSuccess={onDocumentLoadSuccess1}
-                                            onLoadError={onDocumentLoadError1}
-                                            loading={null}
-                                        >
-                                            <Page
-                                                pageNumber={pageNumber1}
-                                                scale={scale1}
-                                                width={containerRef1.current ? Math.min(containerRef1.current.offsetWidth, 600) : 600}
-                                            />
+                                        <Document file="/documents/SponsorshipPackage2025-2026.pdf" onLoadSuccess={onDocumentLoadSuccess1} onLoadError={onDocumentLoadError1} loading={null}>
+                                            <Page pageNumber={pageNumber1} scale={scale1} width={containerRef1.current ? Math.min(containerRef1.current.offsetWidth, 600) : 600}/>
                                         </Document>
                                     )}
                                 </div>
@@ -198,17 +183,8 @@ function Sponsors() {
                                             <button onClick={retryLoadPdf2} className="retry-button">Retry</button>
                                         </div>
                                     ) : (
-                                        <Document
-                                            file="/documents/2025sponsorshipinstructions.pdf"
-                                            onLoadSuccess={onDocumentLoadSuccess2}
-                                            onLoadError={onDocumentLoadError2}
-                                            loading={null}
-                                        >
-                                            <Page
-                                                pageNumber={pageNumber2}
-                                                scale={scale2}
-                                                width={containerRef2.current ? Math.min(containerRef2.current.offsetWidth, 600) : 600}
-                                            />
+                                        <Document file="/documents/2025sponsorshipinstructions.pdf" onLoadSuccess={onDocumentLoadSuccess2} onLoadError={onDocumentLoadError2} loading={null}>
+                                            <Page pageNumber={pageNumber2} scale={scale2} width={containerRef2.current ? Math.min(containerRef2.current.offsetWidth, 600) : 600}/>
                                         </Document>
                                     )}
                                 </div>
