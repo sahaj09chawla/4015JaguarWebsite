@@ -1,0 +1,74 @@
+.students-page {
+    background-color: #5a2572;
+    min-height: 100vh;
+    padding-top: 100px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.students-header-container {
+    position: relative;
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.students-header {
+    font-family: 'Norwester', sans-serif;
+    color: white;
+    font-size: clamp(3rem, 5vw, 5rem);
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+.students-pattern {
+    position: absolute;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    padding-top: 10vw;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.students-pattern .students-line {
+    width: 200vw;
+    white-space: nowrap;
+    font-family: 'Norwester', sans-serif;
+    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.1);
+    animation: scroll-horizontal 80s linear infinite;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.students-pattern .students-line:nth-child(even) {
+    animation-direction: reverse;
+}
+
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.students-header::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: #9370DB;
+}
+
+.students-header.complete::after {
+    display: none;
+}
