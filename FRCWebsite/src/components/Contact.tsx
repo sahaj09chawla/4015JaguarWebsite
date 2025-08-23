@@ -51,7 +51,6 @@ function Contact() {
         }));
     };
 
-    // Convert file to Base64 for EmailJS
     const fileToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -64,7 +63,6 @@ function Contact() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Required field check
         const requiredFields = ["name", "phone", "emailType", "email", "subject", "message"];
         for (const field of requiredFields) {
             if (!formData[field as keyof typeof formData]) {
@@ -75,15 +73,10 @@ function Contact() {
 
         setError("");
 
-        // Convert files to Base64
         const base64Files: string[] = [];
         for (const file of formData.files) {
-            try {
-                const base64 = await fileToBase64(file);
-                base64Files.push(base64);
-            } catch {
-                console.error("Failed to convert file to Base64:", file.name);
-            }
+            const base64 = await fileToBase64(file);
+            base64Files.push(base64);
         }
 
         const templateParams = {
@@ -93,34 +86,36 @@ function Contact() {
             email: formData.email,
             subject: formData.subject,
             message: formData.message,
-            to_email: "jags4015@gmail.com",
-            to_email_business: "jags4015business@gmail.com",
             files: base64Files.join(", "),
         };
 
-        try {
-            await emailjs.send(
-                "YOUR_SERVICE_ID",
-                "YOUR_TEMPLATE_ID",
-                templateParams,
-                "YOUR_PUBLIC_KEY"
-            );
+        // Send to business account
+        await emailjs.send(
+            "service_eke83de",
+            "template_lxvd6yk",
+            { ...templateParams, to_email: "jags4015business@gmail.com" },
+            "YnwnlNF1SL_R48uIp"
+        );
 
-            alert("Message sent successfully!");
-            setFormData({
-                name: "",
-                lastName: "",
-                phone: "",
-                emailType: "",
-                email: "",
-                subject: "",
-                message: "",
-                files: [],
-            });
-        } catch (err) {
-            console.error(err);
-            alert("Failed to send message. Please try again later.");
-        }
+        // Send to personal account
+        await emailjs.send(
+            "service_h8ly42q",
+            "template_76v2zdh",
+            { ...templateParams, to_email: "jags4015@gmail.com" },
+            "YnwnlNF1SL_R48uIp"
+        );
+
+        alert("Message sent successfully to both emails!");
+        setFormData({
+            name: "",
+            lastName: "",
+            phone: "",
+            emailType: "",
+            email: "",
+            subject: "",
+            message: "",
+            files: [],
+        });
     };
 
     return (
