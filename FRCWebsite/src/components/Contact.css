@@ -55,7 +55,6 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Header */
 .contact-header {
     font-size: clamp(3rem, 5vw, 5rem);
     color: white;
@@ -87,7 +86,6 @@
     font-size: clamp(1.1rem, 1.4vw, 1.4rem);
 }
 
-/* Contact Form */
 .contact-form {
     max-width: 800px;
     margin: 0 auto;
@@ -134,11 +132,11 @@
 }
 
 .contact-form select {
-    color: #000; /* Black text for select */
+    color: #000;
 }
 
 .contact-form select option {
-    color: #000; /* Black text for options */
+    color: #000;
 }
 
 .contact-form textarea {
@@ -197,4 +195,51 @@
     .contact-header {
         font-size: 2.5rem;
     }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: rgb(76, 29, 98);
+    color: #000;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-family: 'Norwester', sans-serif;
+    color: white;
+}
+
+.modal-content button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: rgb(127, 67, 154);
+    transform: translateY(-2px);
 }

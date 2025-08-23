@@ -6,6 +6,8 @@ function Contact() {
     const [displayedText, setDisplayedText] = useState("");
     const [typingComplete, setTypingComplete] = useState(false);
     const [error, setError] = useState("");
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
     const [formData, setFormData] = useState({
         name: "",
         lastName: "",
@@ -105,7 +107,10 @@ function Contact() {
             "YnwnlNF1SL_R48uIp"
         );
 
-        alert("Message sent successfully to both emails!");
+        // Show success modal
+        setShowSuccessModal(true);
+
+        // Reset form
         setFormData({
             name: "",
             lastName: "",
@@ -204,6 +209,15 @@ function Contact() {
                     </form>
                 </div>
             </div>
+
+            {showSuccessModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Email Sent Successfully!</h2>
+                        <button onClick={() => setShowSuccessModal(false)}>OK</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
