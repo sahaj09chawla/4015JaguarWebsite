@@ -53,14 +53,6 @@ function Contact() {
         }));
     };
 
-    const fileToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-        });
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -74,12 +66,10 @@ function Contact() {
         }
 
         setError("");
-
-        const base64Files: string[] = [];
-        for (const file of formData.files) {
-            const base64 = await fileToBase64(file);
-            base64Files.push(base64);
-        }
+        const attachments = formData.files.map(file => ({
+            name: file.name,
+            file: file
+        }));
 
         const templateParams = {
             from_name: `${formData.name} ${formData.lastName}`,
@@ -88,7 +78,7 @@ function Contact() {
             email: formData.email,
             subject: formData.subject,
             message: formData.message,
-            files: base64Files.join(", "),
+            attachments
         };
 
         // Send to business account
@@ -122,6 +112,7 @@ function Contact() {
             files: [],
         });
     };
+
 
     return (
         <div className="contact-page">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { Document, Page, pdfjs} from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import './Sponsor.css';
@@ -7,8 +7,14 @@ import Apple from '../assets/apple_logo.png';
 import CGI from '../assets/cgi_logo.png';
 import WellLife from '../assets/wellLife_logo.png';
 import Laser from '../assets/pro_laser_cut_logo.png';
+import EasterChapter from '../assets/eastern_Chapter.png';
 
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.js?url';
+
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+console.log('PDF.js version:', pdfjs.version);
+console.log('Worker URL:', pdfjs.GlobalWorkerOptions.workerSrc);
 
 function Sponsors() {
     const [numPages1, setNumPages1] = useState<number | null>(null);
@@ -25,7 +31,7 @@ function Sponsors() {
     const [isLoading2, setIsLoading2] = useState(true);
     const [pastSponsorsText, setPastSponsorsText] = useState('');
     const [pastSponsorsTypingComplete, setPastSponsorsTypingComplete] = useState(false);
-    const [visibleLogos, setVisibleLogos] = useState([false, false, false, false]);
+    const [visibleLogos, setVisibleLogos] = useState([false, false, false, false, false]);
     const containerRef1 = useRef<HTMLDivElement>(null);
     const containerRef2 = useRef<HTMLDivElement>(null);
     const sponsorsSectionRef = useRef<HTMLDivElement>(null);
@@ -67,10 +73,11 @@ function Sponsors() {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        setTimeout(() => setVisibleLogos([true, false, false, false]), 200);
-                        setTimeout(() => setVisibleLogos([true, true, false, false]), 400);
-                        setTimeout(() => setVisibleLogos([true, true, true, false]), 600);
-                        setTimeout(() => setVisibleLogos([true, true, true, true]), 800);
+                        setTimeout(() => setVisibleLogos([true, false, false, false, false]), 200);
+                        setTimeout(() => setVisibleLogos([true, true, false, false, false]), 400);
+                        setTimeout(() => setVisibleLogos([true, true, true, false, false]), 600);
+                        setTimeout(() => setVisibleLogos([true, true, true, true, false]), 800);
+                        setTimeout(() => setVisibleLogos([true, true, true, true, true]), 1000);
                     }
                 });
             },
@@ -264,10 +271,14 @@ function Sponsors() {
                 <div className={`sponsor-logo ${visibleLogos[1] ? 'visible' : ''}`}>
                     <img src={CGI} alt="CGI" />
                 </div>
+
                 <div className={`sponsor-logo ${visibleLogos[2] ? 'visible' : ''}`}>
                     <img src={WellLife} alt="WellLife" />
                 </div>
                 <div className={`sponsor-logo ${visibleLogos[3] ? 'visible' : ''}`}>
+                    <img src={EasterChapter} alt="Eastern Chapter" />
+                </div>
+                <div className={`sponsor-logo ${visibleLogos[4] ? 'visible' : ''}`}>
                     <img src={Laser} alt="Pro Laser Cut" />
                 </div>
             </div>

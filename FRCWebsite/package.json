@@ -12,7 +12,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "emailjs": "^4.0.3",
-    "pdfjs-dist": "^5.4.54",
+    "pdfjs-dist": "^5.3.93",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-pdf": "^10.1.0",
