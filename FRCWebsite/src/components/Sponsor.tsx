@@ -9,9 +9,7 @@ import WellLife from '../assets/wellLife_logo.png';
 import Laser from '../assets/pro_laser_cut_logo.png';
 import EasterChapter from '../assets/eastern_Chapter.png';
 
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.js?url';
-
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+pdfjs.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js?url';
 
 console.log('PDF.js version:', pdfjs.version);
 console.log('Worker URL:', pdfjs.GlobalWorkerOptions.workerSrc);

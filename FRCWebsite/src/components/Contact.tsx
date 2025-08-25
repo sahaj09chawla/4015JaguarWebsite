@@ -53,6 +53,14 @@ function Contact() {
         }));
     };
 
+    const fileToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+        });
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,11 +74,30 @@ function Contact() {
         }
 
         setError("");
-        const attachments = formData.files.map(file => ({
-            name: file.name,
-            file: file
-        }));
+        const uploadedFileUrls: string[] = [];
 
+        if (formData.files.length > 0) {
+            for (const file of formData.files) {
+                const base64 = await fileToBase64(file);
+
+                // Send to backend
+                const res = await fetch("http://localhost:5000/upload", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ file: base64 }),
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.url) uploadedFileUrls.push(data.url);
+                } else {
+                    setError(`Failed to upload file: ${file.name}`);
+                    return;
+                }
+            }
+        }
+
+        // Send Email via EmailJS (links only)
         const templateParams = {
             from_name: `${formData.name} ${formData.lastName}`,
             phone: formData.phone,
@@ -78,7 +105,7 @@ function Contact() {
             email: formData.email,
             subject: formData.subject,
             message: formData.message,
-            attachments
+            file_links: uploadedFileUrls.join("\n"), // Cloudinary URLs
         };
 
         // Send to business account
@@ -97,7 +124,6 @@ function Contact() {
             "YnwnlNF1SL_R48uIp"
         );
 
-        // Show success modal
         setShowSuccessModal(true);
 
         // Reset form

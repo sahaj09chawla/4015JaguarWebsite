@@ -4,14 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev": "concurrently \"vite\" \"nodemon server/server.js\"",
+    "server": "nodemon server/server.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "cloudinary": "^2.7.0",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "emailjs": "^4.0.3",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
     "pdfjs-dist": "^5.3.93",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
