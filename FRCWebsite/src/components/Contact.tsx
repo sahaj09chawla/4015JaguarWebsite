@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import emailjs from "@emailjs/browser";
 import "./Contact.css";
+
+interface EmailData {
+    from_name: string;
+    phone: string;
+    email_type: string;
+    email: string;
+    subject: string;
+    message: string;
+    file_urls: string[];
+    file_names: string[];
+}
 
 function Contact() {
     const [displayedText, setDisplayedText] = useState("");
@@ -47,19 +57,38 @@ function Contact() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files) return;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
             files: Array.from(files),
         }));
     };
 
-    const fileToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
+    const uploadFile = async (file: File): Promise<string | null> => {
+        const data = new FormData();
+        data.append("file", file);
+
+        const response = await fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: data,
         });
+
+        if (response.ok) {
+            const result = await response.json();
+            return result.url || null;
+        }
+        return null;
+    };
+
+    const sendEmail = async (emailData: EmailData): Promise<boolean> => {
+        const response = await fetch("http://localhost:5000/send-email", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(emailData),
+        });
+
+        return response.ok;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -75,21 +104,15 @@ function Contact() {
 
         setError("");
         const uploadedFileUrls: string[] = [];
+        const uploadedFileNames: string[] = [];
 
         if (formData.files.length > 0) {
             for (const file of formData.files) {
-                const base64 = await fileToBase64(file);
+                const uploadedUrl = await uploadFile(file);
 
-                // Send to backend
-                const res = await fetch("http://localhost:5000/upload", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ file: base64 }),
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.url) uploadedFileUrls.push(data.url);
+                if (uploadedUrl) {
+                    uploadedFileUrls.push(uploadedUrl);
+                    uploadedFileNames.push(file.name);
                 } else {
                     setError(`Failed to upload file: ${file.name}`);
                     return;
@@ -97,48 +120,40 @@ function Contact() {
             }
         }
 
-        // Send Email via EmailJS (links only)
-        const templateParams = {
+        const emailData: EmailData = {
             from_name: `${formData.name} ${formData.lastName}`,
             phone: formData.phone,
             email_type: formData.emailType,
             email: formData.email,
             subject: formData.subject,
             message: formData.message,
-            file_links: uploadedFileUrls.join("\n"), // Cloudinary URLs
+            file_urls: uploadedFileUrls,
+            file_names: uploadedFileNames,
         };
 
-        // Send to business account
-        await emailjs.send(
-            "service_eke83de",
-            "template_lxvd6yk",
-            { ...templateParams, to_email: "jags4015business@gmail.com" },
-            "YnwnlNF1SL_R48uIp"
-        );
+        const emailSent = await sendEmail(emailData);
 
-        // Send to personal account
-        await emailjs.send(
-            "service_h8ly42q",
-            "template_76v2zdh",
-            { ...templateParams, to_email: "jags4015@gmail.com" },
-            "YnwnlNF1SL_R48uIp"
-        );
+        if (emailSent) {
+            setShowSuccessModal(true);
+            setFormData({
+                name: "",
+                lastName: "",
+                phone: "",
+                emailType: "",
+                email: "",
+                subject: "",
+                message: "",
+                files: [],
+            });
 
-        setShowSuccessModal(true);
-
-        // Reset form
-        setFormData({
-            name: "",
-            lastName: "",
-            phone: "",
-            emailType: "",
-            email: "",
-            subject: "",
-            message: "",
-            files: [],
-        });
+            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+            if (fileInput) {
+                fileInput.value = '';
+            }
+        } else {
+            setError("Failed to send email. Please try again.");
+        }
     };
-
 
     return (
         <div className="contact-page">
@@ -174,22 +189,44 @@ function Contact() {
                         <div className="form-row">
                             <div className="form-group">
                                 <label>First Name / Business Name *</label>
-                                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="First Name"/>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    placeholder="First Name"
+                                />
                             </div>
                             <div className="form-group">
                                 <label>Last Name</label>
-                                <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder="Last Name"/>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                    placeholder="Last Name"
+                                />
                             </div>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Phone Number *</label>
-                                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+1 234 567 8900"/>
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    placeholder="+1 234 567 8900"
+                                />
                             </div>
                             <div className="form-group">
                                 <label>Email Type *</label>
-                                <select name="emailType" value={formData.emailType} onChange={handleInputChange}>
+                                <select
+                                    name="emailType"
+                                    value={formData.emailType}
+                                    onChange={handleInputChange}
+                                >
                                     <option value="">Select...</option>
                                     <option value="personal">General Email</option>
                                     <option value="business">Business Email</option>
@@ -199,22 +236,44 @@ function Contact() {
 
                         <div className="form-group">
                             <label>Your Email Address *</label>
-                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="example@email.com"/>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                placeholder="example@email.com"
+                            />
                         </div>
 
                         <div className="form-group">
                             <label>Subject *</label>
-                            <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="Subject"/>
+                            <input
+                                type="text"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
+                                placeholder="Subject"
+                            />
                         </div>
 
                         <div className="form-group">
                             <label>Message *</label>
-                            <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Write your message here..." rows={5}></textarea>
+                            <textarea
+                                name="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                placeholder="Write your message here..."
+                                rows={5}
+                            ></textarea>
                         </div>
 
                         <div className="form-group">
                             <label>Upload Files</label>
-                            <input type="file" multiple onChange={handleFileChange} />
+                            <input
+                                type="file"
+                                multiple
+                                onChange={handleFileChange}
+                            />
                             {formData.files.length > 0 && (
                                 <small>{formData.files.map((f) => f.name).join(", ")}</small>
                             )}
