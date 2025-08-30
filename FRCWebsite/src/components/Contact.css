@@ -170,6 +170,14 @@
     align-self: center;
 }
 
+.file-instruction {
+    display: block;
+    font-size: 0.85rem;
+    color: #ddd;
+    margin-bottom: 5px;
+    font-style: italic;
+}
+
 .submit-button:hover {
     background-color: #7a1fa2;
     transform: translateY(-2px);

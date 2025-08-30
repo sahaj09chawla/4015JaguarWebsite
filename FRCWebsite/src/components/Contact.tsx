@@ -244,6 +244,9 @@ function Contact() {
 
                         <div className="form-group">
                             <label>Upload Files</label>
+                            <small className="file-instruction">
+                                The file must have no spaces and be properly formatted.
+                            </small>
                             <input type="file" multiple accept="application/pdf,image/*" onChange={handleFileChange}/>
                             {formData.files.length > 0 && (
                                 <small>{formData.files.map((f) => f.name).join(", ")}</small>
