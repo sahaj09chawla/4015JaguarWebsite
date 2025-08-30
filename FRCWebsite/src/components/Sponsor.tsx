@@ -35,7 +35,6 @@ function Sponsors() {
     const containerRef2 = useRef<HTMLDivElement>(null);
     const sponsorsSectionRef = useRef<HTMLDivElement>(null);
 
-    // Memoize the file objects to prevent unnecessary reloads
     const pdfFile1 = useMemo(() => ({
         url: '/documents/SponsorshipPackage2025-2026.pdf'
     }), []);
@@ -44,9 +43,7 @@ function Sponsors() {
         url: '/documents/2025sponsorshipinstructions.pdf'
     }), []);
 
-    // Simplified options without CDN dependencies
     const pdfOptions = useMemo(() => ({
-        // Remove CDN-dependent options to avoid additional CORS issues
     }), []);
 
     useEffect(() => {
