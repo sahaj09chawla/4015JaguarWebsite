@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Document, Page, pdfjs} from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -9,7 +9,8 @@ import WellLife from '../assets/wellLife_logo.png';
 import Laser from '../assets/pro_laser_cut_logo.png';
 import EasterChapter from '../assets/eastern_Chapter.png';
 
-pdfjs.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js?url';
+
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';
 
 console.log('PDF.js version:', pdfjs.version);
 console.log('Worker URL:', pdfjs.GlobalWorkerOptions.workerSrc);
@@ -33,6 +34,20 @@ function Sponsors() {
     const containerRef1 = useRef<HTMLDivElement>(null);
     const containerRef2 = useRef<HTMLDivElement>(null);
     const sponsorsSectionRef = useRef<HTMLDivElement>(null);
+
+    // Memoize the file objects to prevent unnecessary reloads
+    const pdfFile1 = useMemo(() => ({
+        url: '/documents/SponsorshipPackage2025-2026.pdf'
+    }), []);
+
+    const pdfFile2 = useMemo(() => ({
+        url: '/documents/2025sponsorshipinstructions.pdf'
+    }), []);
+
+    // Simplified options without CDN dependencies
+    const pdfOptions = useMemo(() => ({
+        // Remove CDN-dependent options to avoid additional CORS issues
+    }), []);
 
     useEffect(() => {
         let currentChar = 0;
@@ -97,6 +112,7 @@ function Sponsors() {
         setNumPages1(numPages);
         setIsLoading1(false);
         setPdfError1(false);
+        console.log('PDF 1 loaded successfully with', numPages, 'pages');
     };
 
     const onDocumentLoadError1 = (error: Error) => {
@@ -109,6 +125,7 @@ function Sponsors() {
         setNumPages2(numPages);
         setIsLoading2(false);
         setPdfError2(false);
+        console.log('PDF 2 loaded successfully with', numPages, 'pages');
     };
 
     const onDocumentLoadError2 = (error: Error) => {
@@ -129,19 +146,38 @@ function Sponsors() {
                 a.click();
                 a.remove();
                 window.URL.revokeObjectURL(blobUrl);
+            })
+            .catch(error => {
+                console.error('Error downloading PDF:', error);
             });
     };
 
     const retryLoadPdf1 = () => {
         setIsLoading1(true);
         setPdfError1(false);
-        setPageNumber1(prev => prev);
+        setPageNumber1(1);
     };
 
     const retryLoadPdf2 = () => {
         setIsLoading2(true);
         setPdfError2(false);
-        setPageNumber2(prev => prev);
+        setPageNumber2(1);
+    };
+
+    const onPageLoadSuccess1 = () => {
+        console.log('Page loaded successfully for PDF 1');
+    };
+
+    const onPageLoadSuccess2 = () => {
+        console.log('Page loaded successfully for PDF 2');
+    };
+
+    const onPageLoadError1 = (error: Error) => {
+        console.error('Error loading page for PDF 1:', error);
+    };
+
+    const onPageLoadError2 = (error: Error) => {
+        console.error('Error loading page for PDF 2:', error);
     };
 
     return (
@@ -198,8 +234,8 @@ function Sponsors() {
                                             <button onClick={retryLoadPdf1} className="retry-button">Retry</button>
                                         </div>
                                     ) : (
-                                        <Document file="/documents/SponsorshipPackage2025-2026.pdf" onLoadSuccess={onDocumentLoadSuccess1} onLoadError={onDocumentLoadError1} loading={null}>
-                                            <Page pageNumber={pageNumber1} scale={scale1} width={containerRef1.current ? Math.min(containerRef1.current.offsetWidth, 600) : 600}/>
+                                        <Document file={pdfFile1} onLoadSuccess={onDocumentLoadSuccess1} onLoadError={onDocumentLoadError1} loading={<div className="pdf-loading">Loading PDF preview...</div>} error={<div className="pdf-error">Failed to load PDF</div>} options={pdfOptions}>
+                                            <Page pageNumber={pageNumber1} scale={scale1} width={containerRef1.current ? Math.min(containerRef1.current.offsetWidth - 30, 600) : 600} onLoadSuccess={onPageLoadSuccess1} onLoadError={onPageLoadError1} loading={<div>Loading page...</div>} error={<div>Error loading page</div>}/>
                                         </Document>
                                     )}
                                 </div>
@@ -239,8 +275,8 @@ function Sponsors() {
                                             <button onClick={retryLoadPdf2} className="retry-button">Retry</button>
                                         </div>
                                     ) : (
-                                        <Document file="/documents/2025sponsorshipinstructions.pdf" onLoadSuccess={onDocumentLoadSuccess2} onLoadError={onDocumentLoadError2} loading={null}>
-                                            <Page pageNumber={pageNumber2} scale={scale2} width={containerRef2.current ? Math.min(containerRef2.current.offsetWidth, 600) : 600}/>
+                                        <Document file={pdfFile2} onLoadSuccess={onDocumentLoadSuccess2} onLoadError={onDocumentLoadError2} loading={<div className="pdf-loading">Loading PDF preview...</div>} error={<div className="pdf-error">Failed to load PDF</div>} options={pdfOptions}>
+                                            <Page pageNumber={pageNumber2} scale={scale2} width={containerRef2.current ? Math.min(containerRef2.current.offsetWidth - 30, 600) : 600} onLoadSuccess={onPageLoadSuccess2} onLoadError={onPageLoadError2} loading={<div>Loading page...</div>} error={<div>Error loading page</div>}/>
                                         </Document>
                                     )}
                                 </div>
