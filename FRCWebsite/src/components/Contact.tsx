@@ -19,6 +19,7 @@ function Contact() {
     const [typingComplete, setTypingComplete] = useState(false);
     const [error, setError] = useState("");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showSendingModal, setShowSendingModal] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -109,6 +110,8 @@ function Contact() {
         }
 
         setError("");
+        setShowSendingModal(true); // Show sending modal
+
         const uploadedFileUrls: string[] = [];
         const uploadedFileNames: string[] = [];
         const isPDFs: boolean[] = [];
@@ -125,6 +128,7 @@ function Contact() {
                     isDocuments.push(uploadResult.isDocument);
                 } else {
                     setError(`Failed to upload file: ${file.name}`);
+                    setShowSendingModal(false); // Hide modal on error
                     return;
                 }
             }
@@ -144,6 +148,7 @@ function Contact() {
         };
 
         const emailSent = await sendEmail(emailData);
+        setShowSendingModal(false); // Hide sending modal
 
         if (emailSent) {
             setShowSuccessModal(true);
@@ -159,9 +164,7 @@ function Contact() {
             });
 
             const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-            if (fileInput) {
-                fileInput.value = '';
-            }
+            if (fileInput) fileInput.value = '';
         } else {
             setError("Failed to send email. Please try again.");
         }
@@ -259,6 +262,17 @@ function Contact() {
                     <div className="modal-content">
                         <h2>Email Sent Successfully!</h2>
                         <button onClick={() => setShowSuccessModal(false)}>OK</button>
+                    </div>
+                </div>
+            )}
+
+            {showSendingModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Sending Email ...</h2>
+                        <button className="modal-ok-button" onClick={() => setShowSendingModal(false)}>
+                            OK
+                        </button>
                     </div>
                 </div>
             )}

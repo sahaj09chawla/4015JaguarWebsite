@@ -243,3 +243,21 @@
     background-color: rgb(127, 67, 154);
     transform: translateY(-2px);
 }
+
+.modal-ok-button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.modal-ok-button:hover {
+    background-color: rgb(127, 67, 154);
+    transform: translateY(-2px);
+}
