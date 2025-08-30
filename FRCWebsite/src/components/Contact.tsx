@@ -10,6 +10,8 @@ interface EmailData {
     message: string;
     file_urls: string[];
     file_names: string[];
+    isPDFs: boolean[];
+    isDocuments: boolean[];
 }
 
 function Contact() {
@@ -63,7 +65,7 @@ function Contact() {
         }));
     };
 
-    const uploadFile = async (file: File): Promise<string | null> => {
+    const uploadFile = async (file: File): Promise<{ url: string; isPDF: boolean; isDocument: boolean } | null> => {
         const data = new FormData();
         data.append("file", file);
 
@@ -74,7 +76,11 @@ function Contact() {
 
         if (response.ok) {
             const result = await response.json();
-            return result.url || null;
+            return {
+                url: result.url || null,
+                isPDF: result.isPDF || false,
+                isDocument: result.isDocument || false
+            };
         }
         return null;
     };
@@ -105,14 +111,18 @@ function Contact() {
         setError("");
         const uploadedFileUrls: string[] = [];
         const uploadedFileNames: string[] = [];
+        const isPDFs: boolean[] = [];
+        const isDocuments: boolean[] = [];
 
         if (formData.files.length > 0) {
             for (const file of formData.files) {
-                const uploadedUrl = await uploadFile(file);
+                const uploadResult = await uploadFile(file);
 
-                if (uploadedUrl) {
-                    uploadedFileUrls.push(uploadedUrl);
+                if (uploadResult && uploadResult.url) {
+                    uploadedFileUrls.push(uploadResult.url);
                     uploadedFileNames.push(file.name);
+                    isPDFs.push(uploadResult.isPDF);
+                    isDocuments.push(uploadResult.isDocument);
                 } else {
                     setError(`Failed to upload file: ${file.name}`);
                     return;
@@ -129,6 +139,8 @@ function Contact() {
             message: formData.message,
             file_urls: uploadedFileUrls,
             file_names: uploadedFileNames,
+            isPDFs,
+            isDocuments,
         };
 
         const emailSent = await sendEmail(emailData);
@@ -189,44 +201,22 @@ function Contact() {
                         <div className="form-row">
                             <div className="form-group">
                                 <label>First Name / Business Name *</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    placeholder="First Name"
-                                />
+                                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="First Name"/>
                             </div>
                             <div className="form-group">
                                 <label>Last Name</label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    value={formData.lastName}
-                                    onChange={handleInputChange}
-                                    placeholder="Last Name"
-                                />
+                                <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder="Last Name"/>
                             </div>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Phone Number *</label>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    placeholder="+1 234 567 8900"
-                                />
+                                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+1 234 567 8900"/>
                             </div>
                             <div className="form-group">
                                 <label>Email Type *</label>
-                                <select
-                                    name="emailType"
-                                    value={formData.emailType}
-                                    onChange={handleInputChange}
-                                >
+                                <select name="emailType" value={formData.emailType} onChange={handleInputChange}>
                                     <option value="">Select...</option>
                                     <option value="personal">General Email</option>
                                     <option value="business">Business Email</option>
@@ -236,44 +226,22 @@ function Contact() {
 
                         <div className="form-group">
                             <label>Your Email Address *</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                placeholder="example@email.com"
-                            />
+                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="example@email.com"/>
                         </div>
 
                         <div className="form-group">
                             <label>Subject *</label>
-                            <input
-                                type="text"
-                                name="subject"
-                                value={formData.subject}
-                                onChange={handleInputChange}
-                                placeholder="Subject"
-                            />
+                            <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="Subject"/>
                         </div>
 
                         <div className="form-group">
                             <label>Message *</label>
-                            <textarea
-                                name="message"
-                                value={formData.message}
-                                onChange={handleInputChange}
-                                placeholder="Write your message here..."
-                                rows={5}
-                            ></textarea>
+                            <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Write your message here..." rows={5}></textarea>
                         </div>
 
                         <div className="form-group">
                             <label>Upload Files</label>
-                            <input
-                                type="file"
-                                multiple
-                                onChange={handleFileChange}
-                            />
+                            <input type="file" multiple accept="application/pdf,image/*" onChange={handleFileChange}/>
                             {formData.files.length > 0 && (
                                 <small>{formData.files.map((f) => f.name).join(", ")}</small>
                             )}
