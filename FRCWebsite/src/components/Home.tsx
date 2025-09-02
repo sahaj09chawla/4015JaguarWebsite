@@ -143,7 +143,6 @@ function Home() {
             (entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Typing animation
                         let currentChar = 0;
                         const typingInterval = setInterval(() => {
                             if (typingElement) {
@@ -152,7 +151,6 @@ function Home() {
                             currentChar++;
                             if (currentChar === socialText.length) {
                                 clearInterval(typingInterval);
-                                // Logo animation after typing completes
                                 setTimeout(() => {
                                     logos.forEach(logo => {
                                         logo.classList.add('visible');
@@ -246,8 +244,7 @@ function Home() {
             </div>
             <div className="about-container">
 
-
-                <div className="jags-pattern">
+                <div className="jags-pattern-top">
                     {[...Array(5)].map((_, i) => (
                         <div key={i} className="jags-line">{"JAGS ".repeat(20)}</div>
                     ))}
@@ -279,11 +276,7 @@ function Home() {
                         &#10094;
                     </button>
 
-                    <img
-                        src={modalImage}
-                        alt="Expanded view"
-                        onClick={e => e.stopPropagation()}
-                    />
+                    <img src={modalImage} alt="Expanded view" onClick={e => e.stopPropagation()}/>
 
                     <button className="modal-nav-button right" onClick={(e) => {e.stopPropagation();goToNextImage();}} aria-label="Next image">
                         &#10095;

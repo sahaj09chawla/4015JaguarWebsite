@@ -20,8 +20,8 @@ function Sponsors() {
     const [numPages2, setNumPages2] = useState<number | null>(null);
     const [pageNumber1, setPageNumber1] = useState(1);
     const [pageNumber2, setPageNumber2] = useState(1);
-    const [scale1, setScale1] = useState(1.0);
-    const [scale2, setScale2] = useState(1.0);
+    const [scale1, setScale1] = useState(0.9);
+    const [scale2, setScale2] = useState(0.9);
     const [displayedText, setDisplayedText] = useState('');
     const [typingComplete, setTypingComplete] = useState(false);
     const [pdfError1, setPdfError1] = useState(false);

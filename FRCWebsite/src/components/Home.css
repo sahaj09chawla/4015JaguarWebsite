@@ -157,34 +157,31 @@
     min-height: 400px;
 }
 
-.jags-pattern {
+.jags-pattern-top {
     position: absolute;
     width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
     height: 100%;
-    left: -17%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 0;
-    padding-top: 50px;
+    padding-top: 4vw;
     z-index: 1;
     overflow: hidden;
 }
 
-.jags-line {
-    width: 200%;
-    white-space: nowrap;
+.jags-pattern-top .jags-line {
     font-family: 'Norwester', sans-serif;
-    font-size: 3.5rem;
+    width: 200vw;
+    white-space: nowrap;
+    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(255,255,255,0.1);
     animation: scroll-horizontal 80s linear infinite;
     text-transform: uppercase;
     letter-spacing: 4px;
-}
-
-.jags-line:nth-child(even) {
-    animation-direction: reverse;
 }
 
 .about-section {
