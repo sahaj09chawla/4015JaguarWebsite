@@ -5,8 +5,15 @@
     overflow-x: hidden;
     font-family: 'Norwester', sans-serif;
     color: white;
-    padding-top: 100px;
+    padding-top: 7vw;
 }
+
+@media (max-width: 1367px) {
+    .contact-page {
+        padding-top: 9vw;
+    }
+}
+
 
 .jags-pattern-contact {
     position: absolute;

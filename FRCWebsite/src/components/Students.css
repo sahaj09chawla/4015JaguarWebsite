@@ -3,7 +3,13 @@
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    padding-top: 100px;
+    padding-top: 7vw;
+}
+
+@media (max-width: 1367px) {
+    .students-page {
+        padding-top: 9vw;
+    }
 }
 
 .students-pattern {

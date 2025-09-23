@@ -5,29 +5,33 @@
     font-weight: normal;
     font-style: normal;
 }
+
+:root {
+    --navbar-height: 6.25rem;
+    --purple-height: 1.875rem;
+    --logo-height: 9.375rem;
+    --font-size: 1.875rem;
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: black;
-    padding: 10px 40px;
+    padding: 0.625rem 2.5rem;
     width: 100%;
-    height: 100px;
+    height: var(--navbar-height);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
 }
 
-.nav-spacer {
-    flex-grow: 0;
-    width: 650px;
-}
-
 .logo img {
-    height: 150px;
+    height: var(--logo-height);
     width: auto;
-    margin-right: 10px;
+    margin-right: 0.625rem;
+    transition: height 0.3s ease;
 }
 
 .nav-links {
@@ -39,7 +43,7 @@
 }
 
 .nav-links li {
-    margin: 0 10px;
+    margin: 0 0.625rem;
     position: relative;
 }
 
@@ -47,7 +51,7 @@
     font-family: 'Norwester', sans-serif;
     text-decoration: none;
     color: white;
-    font-size: 30px;
+    font-size: var(--font-size);
     font-weight: 500;
     transition: color 0.3s ease;
 }
@@ -59,11 +63,11 @@
 .nav-links li::after {
     content: "";
     position: absolute;
-    right: -10px;
+    right: -0.625rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 2px;
-    height: 20px;
+    width: 0.125rem;
+    height: 1.25rem;
     background-color: white;
 }
 
@@ -73,20 +77,150 @@
 
 .purple-1 {
     width: 100%;
-    height: 30px;
+    height: calc(var(--purple-height) * 1);
     background-color: #420255;
     position: fixed;
-    top: 130px;
+    top: var(--navbar-height);
     left: 0;
     z-index: 999;
 }
 
 .purple-2 {
     width: 100%;
-    height: 30px;
+    height: calc(var(--purple-height) * 1);
     background-color: #320141;
     position: fixed;
-    top: 100px;
+    top: calc(var(--navbar-height) + var(--purple-height));
     left: 0;
     z-index: 999;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+}
+
+.bar {
+    width: 2.1875rem;
+    height: 0.25rem;
+    background-color: white;
+    margin: 0.25rem 0;
+    transition: 0.3s;
+    border-radius: 0.125rem;
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --navbar-height: 5.625rem;
+        --purple-height: 1.5625rem;
+        --logo-height: 7.5rem;
+        --font-size: 1.5rem;
+    }
+
+    .navbar {
+        padding: 0.625rem 1.875rem;
+    }
+
+    .nav-links li {
+        margin: 0 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --navbar-height: 5rem;
+        --logo-height: 6.25rem;
+        --font-size: 1.75rem;
+    }
+
+    .navbar {
+        padding: 0.625rem 1.25rem;
+    }
+
+    .hamburger {
+        display: flex;
+        right: 1.25rem;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: var(--navbar-height);
+        right: -100%;
+        background-color: black;
+        width: 70vw;
+        height: calc(100vh - var(--navbar-height));
+        flex-direction: column;
+        transition: right 0.5s ease;
+        z-index: 998;
+        padding-top: 2.5rem;
+        justify-content: flex-start;
+    }
+
+    .nav-active {
+        right: 0;
+    }
+
+    .nav-links li {
+        margin: 1.25rem 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links li::after {
+        content: none;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 0.9375rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --navbar-height: 4.375rem;
+        --purple-height: 0.9375rem;
+        --logo-height: 5rem;
+        --font-size: 1.5rem;
+    }
+
+    .navbar {
+        padding: 0.625rem 0.9375rem;
+    }
+
+    .hamburger {
+        right: 1.25rem;
+    }
+
+    .nav-links {
+        width: 80vw;
+    }
+
+    .bar {
+        width: 1.875rem;
+        height: 0.1875rem;
+    }
+}
+
+@media (max-width: 320px) {
+    :root {
+        --navbar-height: 3.75rem;
+        --purple-height: 0.75rem;
+        --logo-height: 3.75rem;
+        --font-size: 1.25rem;
+    }
+
+    .hamburger {
+        top: 50%;
+    }
+
+    .bar {
+        width: 1.5625rem;
+    }
 }
