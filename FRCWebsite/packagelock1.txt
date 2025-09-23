@@ -1,0 +1,44 @@
+{
+  "name": "frcwebsite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "dev": "concurrently \"vite\" \"nodemon server/server.js\"",
+    "server": "nodemon server/server.js"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "axios": "^1.11.0",
+    "cloudinary": "^2.7.0",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.5",
+    "nodemon": "^3.1.10",
+    "pdfjs-dist": "^5.4.149",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-pdf": "^10.1.0",
+    "react-router-dom": "^7.6.3",
+    "streamifier": "^0.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@types/nodemailer": "^7.0.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.2"
+  }
+}
