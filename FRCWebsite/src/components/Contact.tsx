@@ -88,7 +88,7 @@ function Contact() {
         return null;
     };
 
-    const sendEmail = async (emailData: EmailData): Promise<boolean> => {
+    const sendEmail = async (emailData: EmailData): Promise<{ ok: boolean; error?: string }> => {
         const response = await fetch(`${API_BASE_URL}/send-email`, {
             method: "POST",
             headers: {
@@ -97,7 +97,30 @@ function Contact() {
             body: JSON.stringify(emailData),
         });
 
-        return response.ok;
+        if (response.ok) {
+            return { ok: true };
+        }
+
+        let message = `Server error (${response.status}).`;
+        try {
+            const data = (await response.json()) as { error?: string; details?: unknown };
+            if (data.error) {
+                message = data.error;
+            } else if (data.details && typeof data.details === "object") {
+                const d = data.details as {
+                    businessResult?: { error?: string };
+                    personalResult?: { error?: string };
+                };
+                const e1 = d.businessResult?.error;
+                const e2 = d.personalResult?.error;
+                if (e1 || e2) {
+                    message = [e1, e2].filter(Boolean).join(" — ");
+                }
+            }
+        } catch {
+            // keep generic message
+        }
+        return { ok: false, error: message };
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -149,10 +172,10 @@ function Contact() {
             isDocuments,
         };
 
-        const emailSent = await sendEmail(emailData);
+        const emailResult = await sendEmail(emailData);
         setShowSendingModal(false); // Hide sending modal
 
-        if (emailSent) {
+        if (emailResult.ok) {
             setShowSuccessModal(true);
             setFormData({
                 name: "",
@@ -168,7 +191,7 @@ function Contact() {
             const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
             if (fileInput) fileInput.value = '';
         } else {
-            setError("Failed to send email. Please try again.");
+            setError(emailResult.error || "Failed to send email. Please try again.");
         }
     };
 
