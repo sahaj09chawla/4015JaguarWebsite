@@ -79,6 +79,7 @@ function Sponsors() {
     }, [typingComplete]);
 
     useEffect(() => {
+        const observedSection = sponsorsSectionRef.current;
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -94,13 +95,13 @@ function Sponsors() {
             { threshold: 0.3 }
         );
 
-        if (sponsorsSectionRef.current) {
-            observer.observe(sponsorsSectionRef.current);
+        if (observedSection) {
+            observer.observe(observedSection);
         }
 
         return () => {
-            if (sponsorsSectionRef.current) {
-                observer.unobserve(sponsorsSectionRef.current);
+            if (observedSection) {
+                observer.unobserve(observedSection);
             }
         };
     }, []);

@@ -84,13 +84,19 @@ function Gallery() {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (!modalOpen) return;
-            if (e.key === 'ArrowRight') nextImage();
-            if (e.key === 'ArrowLeft') prevImage();
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowRight' && flatImages.length > 0) {
+                setCurrentIndex((prev) => (prev + 1) % flatImages.length);
+            }
+            if (e.key === 'ArrowLeft' && flatImages.length > 0) {
+                setCurrentIndex((prev) => (prev - 1 + flatImages.length) % flatImages.length);
+            }
+            if (e.key === 'Escape') {
+                setModalOpen(false);
+            }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [modalOpen, flatImages]);
+    }, [modalOpen, flatImages.length]);
 
     return (
         <div className="gallery-page">

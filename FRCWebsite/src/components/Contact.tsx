@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Contact.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
+
 interface EmailData {
     from_name: string;
     phone: string;
@@ -70,7 +72,7 @@ function Contact() {
         const data = new FormData();
         data.append("file", file);
 
-        const response = await fetch("http://localhost:5000/upload", {
+        const response = await fetch(`${API_BASE_URL}/upload`, {
             method: "POST",
             body: data,
         });
@@ -87,7 +89,7 @@ function Contact() {
     };
 
     const sendEmail = async (emailData: EmailData): Promise<boolean> => {
-        const response = await fetch("http://localhost:5000/send-email", {
+        const response = await fetch(`${API_BASE_URL}/send-email`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

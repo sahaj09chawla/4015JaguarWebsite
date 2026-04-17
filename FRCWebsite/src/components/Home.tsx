@@ -22,6 +22,16 @@ import youtube from '../assets/youtube_logo.png';
 
 const images = [Img1, Img2, Img3, Img4];
 const teamName = "4015 Jaguar Robotics";
+const galleryImages = [
+    { id: 1, src: Img5, alt: "2022 Moving Robot" },
+    { id: 2, src: Img6, alt: "Backstage Preparation" },
+    { id: 3, src: Img7, alt: "Drive Control Station" },
+    { id: 4, src: Img8, alt: "Team Member Jason" },
+    { id: 5, src: Img9, alt: "Mantis Robot" },
+    { id: 6, src: Img10, alt: "Team Working Together" },
+    { id: 7, src: Img12, alt: "Pit Crew Working" },
+    { id: 8, src: Img13, alt: "Building Robot" }
+];
 
 function Home() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,17 +39,6 @@ function Home() {
     const [slideIn, setSlideIn] = useState(false);
     const [modalImage, setModalImage] = useState<string | null>(null);
     const [currentGalleryIndex, setCurrentGalleryIndex] = useState<number | null>(null);
-
-    const galleryImages = [
-        { id: 1, src: Img5, alt: "2022 Moving Robot" },
-        { id: 2, src: Img6, alt: "Backstage Preparation" },
-        { id: 3, src: Img7, alt: "Drive Control Station" },
-        { id: 4, src: Img8, alt: "Team Member Jason" },
-        { id: 5, src: Img9, alt: "Mantis Robot" },
-        { id: 6, src: Img10, alt: "Team Working Together" },
-        { id: 7, src: Img12, alt: "Pit Crew Working" },
-        { id: 8, src: Img13, alt: "Building Robot" }
-    ];
 
     useEffect(() => {
         setSlideIn(true);
@@ -102,9 +101,21 @@ function Home() {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && modalImage) closeModal();
-            if (e.key === 'ArrowRight' && modalImage) goToNextImage();
-            if (e.key === 'ArrowLeft' && modalImage) goToPrevImage();
+            if (e.key === 'Escape' && modalImage) {
+                setModalImage(null);
+                setCurrentGalleryIndex(null);
+                document.body.style.overflow = 'auto';
+            }
+            if (e.key === 'ArrowRight' && modalImage && currentGalleryIndex !== null) {
+                const nextIndex = (currentGalleryIndex + 1) % galleryImages.length;
+                setModalImage(galleryImages[nextIndex].src);
+                setCurrentGalleryIndex(nextIndex);
+            }
+            if (e.key === 'ArrowLeft' && modalImage && currentGalleryIndex !== null) {
+                const prevIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+                setModalImage(galleryImages[prevIndex].src);
+                setCurrentGalleryIndex(prevIndex);
+            }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
@@ -132,45 +143,6 @@ function Home() {
         );
         if (section) observer.observe(section);
         return () => { if (section) observer.unobserve(section); };
-    }, []);
-
-    useEffect(() => {
-        const socialText = "Follow and experience our robotics journey...";
-        const typingElement = document.querySelector('.typing-text');
-        const logos = document.querySelectorAll('.social-logo');
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        let currentChar = 0;
-                        const typingInterval = setInterval(() => {
-                            if (typingElement) {
-                                typingElement.textContent = socialText.slice(0, currentChar + 1);
-                            }
-                            currentChar++;
-                            if (currentChar === socialText.length) {
-                                clearInterval(typingInterval);
-                                setTimeout(() => {
-                                    logos.forEach(logo => {
-                                        logo.classList.add('visible');
-                                    });
-                                }, 500);
-                            }
-                        }, 150);
-
-                        return () => clearInterval(typingInterval);
-                    }
-                });
-            },
-            { threshold: 0.5 }
-        );
-
-        if (typingElement) observer.observe(typingElement);
-
-        return () => {
-            if (typingElement) observer.unobserve(typingElement);
-        };
     }, []);
 
     useEffect(() => {
