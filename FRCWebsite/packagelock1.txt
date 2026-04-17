@@ -7,8 +7,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev": "concurrently \"vite\" \"nodemon server/server.js\"",
-    "server": "nodemon server/server.js"
+    "dev": "concurrently \"vite\" \"nodemon server/index.js\"",
+    "server": "nodemon server/index.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
