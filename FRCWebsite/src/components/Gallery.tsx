@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import './Gallery.css';
 
 interface GalleryImage {
+    index: number;
     src: string;
     width: number;
     height: number;
@@ -10,10 +11,11 @@ interface GalleryImage {
 
 type ImageModule = { default: string };
 
-const images: Record<string, ImageModule> = import.meta.glob(
-    '../assets/gallery/*.{jpg,jpeg,png}',
-    { eager: true }
-);
+/** Lazy glob: avoids bundling every gallery URL into the initial chunk. */
+const imageLoaders = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png}') as Record<
+    string,
+    () => Promise<ImageModule>
+>;
 
 function Gallery() {
     const [displayedText, setDisplayedText] = useState('');
@@ -40,18 +42,20 @@ function Gallery() {
 
     useEffect(() => {
         const loadImages = async () => {
-            const imgData: GalleryImage[] = [];
+            const paths = Object.keys(imageLoaders).sort();
 
-            for (const path in images) {
-                const src = images[path].default;
-                const dimensions = await getImageDimensions(src);
-                imgData.push({
-                    src,
-                    width: dimensions.width,
-                    height: dimensions.height,
-                    aspectRatio: dimensions.width / dimensions.height,
-                });
-            }
+            const modules = await Promise.all(paths.map((p) => imageLoaders[p]()));
+            const srcs = modules.map((m) => m.default);
+
+            const dimensionsList = await Promise.all(srcs.map((src) => getImageDimensions(src)));
+
+            const imgData: GalleryImage[] = paths.map((_, i) => ({
+                index: i,
+                src: srcs[i],
+                width: dimensionsList[i].width,
+                height: dimensionsList[i].height,
+                aspectRatio: dimensionsList[i].width / dimensionsList[i].height,
+            }));
 
             setFlatImages(imgData);
 
@@ -64,10 +68,6 @@ function Gallery() {
         };
 
         void loadImages();
-
-        return () => {
-            layoutCache.current = null;
-        };
     }, []);
 
     const openModal = (index: number) => {
@@ -117,12 +117,19 @@ function Gallery() {
             <div className="gallery-grid">
                 {layout.map((row, rowIndex) => (
                     <div className="gallery-row" key={rowIndex}>
-                        {row.map((img, i) => {
-                            const index = flatImages.findIndex((f) => f.src === img.src);
-                            return (
-                                <img key={i} src={img.src} style={{ width: `${img.width}px`, height: `${img.height}px` }} className="gallery-image1" alt={`Gallery item ${rowIndex}-${i}`} onClick={() => openModal(index)}/>
-                            );
-                        })}
+                        {row.map((img, i) => (
+                            <img
+                                key={`${rowIndex}-${img.index}-${i}`}
+                                src={img.src}
+                                style={{ width: `${img.width}px`, height: `${img.height}px` }}
+                                className="gallery-image1"
+                                alt={`Gallery item ${rowIndex}-${i}`}
+                                loading="lazy"
+                                decoding="async"
+                                fetchPriority="low"
+                                onClick={() => openModal(img.index)}
+                            />
+                        ))}
                     </div>
                 ))}
             </div>
@@ -130,7 +137,14 @@ function Gallery() {
             {modalOpen && flatImages.length > 0 && (
                 <div className="gallery-modal" onClick={closeModal}>
                     <span className="gallery-modal-close" onClick={closeModal}>&times;</span>
-                    <img src={flatImages[currentIndex].src} className="gallery-modal-image" alt="Modal" onClick={(e) => e.stopPropagation()}/>
+                    <img
+                        src={flatImages[currentIndex].src}
+                        className="gallery-modal-image"
+                        alt="Modal"
+                        decoding="async"
+                        fetchPriority="high"
+                        onClick={(e) => e.stopPropagation()}
+                    />
                     <button className="gallery-modal-prev"
                         onClick={(e) => {
                             e.stopPropagation();
@@ -157,6 +171,7 @@ function getImageDimensions(src: string): Promise<{ width: number; height: numbe
     return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        img.onerror = () => resolve({ width: 3, height: 2 });
         img.src = src;
     });
 }
