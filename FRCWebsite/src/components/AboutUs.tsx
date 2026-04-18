@@ -149,7 +149,7 @@ function AboutUs() {
                     <h1 className="about-header">{displayedText}</h1>
                     <div className="about-content-row">
                         <div className="about-image">
-                            <img src={AboutImage} alt="Team About" />
+                            <img src={AboutImage} alt="Team About" decoding="async" fetchPriority="high" />
                         </div>
                         <div className="about-text">
                             <p>
@@ -199,16 +199,16 @@ function AboutUs() {
                 <div className="achievements-wrapper">
                     <div className="achievements-container">
                         <div className="achievement-image">
-                            <img src={achievement} alt="Team Achievements" />
+                            <img src={achievement} alt="Team Achievements" loading="lazy" decoding="async" />
                         </div>
                         <div className="achievements-grid">
                             <div className="banner-parent" >
                                 <div className="scalable-banner-container">
                                     <ul className="banners">
-                                        <li><img src={first} alt="FIRST Logo" />2020<br/> DISTRICT FINALIST</li>
-                                        <li><img src={first} alt="FIRST Logo" />2020<br/> AUTONOMOUS AWARD</li>
-                                        <li><img src={first} alt="FIRST Logo" />2022<br/> DISTRICT WINNERS</li>
-                                        <li><img src={first} alt="FIRST Logo" />2024<br/> GRACIOUS PROFESSIONALISM AWARD</li>
+                                        <li><img src={first} alt="FIRST Logo" loading="lazy" decoding="async" />2020<br/> DISTRICT FINALIST</li>
+                                        <li><img src={first} alt="FIRST Logo" loading="lazy" decoding="async" />2020<br/> AUTONOMOUS AWARD</li>
+                                        <li><img src={first} alt="FIRST Logo" loading="lazy" decoding="async" />2022<br/> DISTRICT WINNERS</li>
+                                        <li><img src={first} alt="FIRST Logo" loading="lazy" decoding="async" />2024<br/> GRACIOUS PROFESSIONALISM AWARD</li>
                                     </ul>
                                 </div>
                             </div>
@@ -222,7 +222,7 @@ function AboutUs() {
 
                 <div className="subteams-container">
                     <div className="subteams-image-container">
-                        <img src={subteam} alt="Subteams" className="subteams-image" />
+                        <img src={subteam} alt="Subteams" className="subteams-image" loading="lazy" decoding="async" />
                         <div className="subteams-image-overlay"></div>
                     </div>
 
@@ -240,7 +240,7 @@ function AboutUs() {
                                 <div className="subteam-button-inner">
                                     <div className="subteam-button-front">
                                         Mechanical
-                                        <img src={mechanical} alt="Mechanical" />
+                                        <img src={mechanical} alt="Mechanical" loading="lazy" decoding="async" />
                                     </div>
                                     <div className="subteam-button-back">
                                         <ul>
@@ -257,7 +257,7 @@ function AboutUs() {
                                 <div className="subteam-button-inner">
                                     <div className="subteam-button-front">
                                         Electrical
-                                        <img src={electrical} alt="Electrical" />
+                                        <img src={electrical} alt="Electrical" loading="lazy" decoding="async" />
                                     </div>
                                     <div className="subteam-button-back">
                                         <ul>
@@ -274,7 +274,7 @@ function AboutUs() {
                                 <div className="subteam-button-inner">
                                     <div className="subteam-button-front">
                                         Design
-                                        <img src={design} alt="Design" />
+                                        <img src={design} alt="Design" loading="lazy" decoding="async" />
                                     </div>
                                     <div className="subteam-button-back">
                                         <ul>
@@ -291,7 +291,7 @@ function AboutUs() {
                                 <div className="subteam-button-inner">
                                     <div className="subteam-button-front">
                                         Programming
-                                        <img src={programming} alt="Programming" />
+                                        <img src={programming} alt="Programming" loading="lazy" decoding="async" />
                                     </div>
                                     <div className="subteam-button-back">
                                         <ul>

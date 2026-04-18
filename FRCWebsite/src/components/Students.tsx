@@ -80,7 +80,7 @@ function Students() {
                         {teamMembers.map((member) => (
                             <div key={member.id} className="student-card">
                                 <div className="student-image-container">
-                                    <img src={member.image} alt={member.name} className="student-image" />
+                                    <img src={member.image} alt={member.name} className="student-image" loading="lazy" decoding="async" />
                                 </div>
                                 <div className="student-info">
                                     <h3 className="student-name">{member.name}</h3>
@@ -101,7 +101,7 @@ function Students() {
                             {alumniMembers.map((member) => (
                                 <div key={`alumni-${member.id}`} className="alumni-card">
                                     <div className="alumni-image-container">
-                                        <img src={member.image} alt={member.name} className="alumni-image" />
+                                        <img src={member.image} alt={member.name} className="alumni-image" loading="lazy" decoding="async" />
                                     </div>
                                     <div className="alumni-info">
                                         <h3 className="alumni-name">{member.name}</h3>

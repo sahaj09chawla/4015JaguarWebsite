@@ -1,14 +1,34 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import AboutUs from "./components/AboutUs";
-import Contact from "./components/Contact";
-import Gallery from "./components/Gallery";
-import Students from "./components/Students";
-import Sponsors from "./components/Sponsor";
 
 import { useScreenWidth } from "./hooks/useScreenWidth";
 import ScreenBlocker from "./components/ScreenBlocker";
+
+const Home = lazy(() => import("./components/Home"));
+const AboutUs = lazy(() => import("./components/AboutUs"));
+const Contact = lazy(() => import("./components/Contact"));
+const Gallery = lazy(() => import("./components/Gallery"));
+const Students = lazy(() => import("./components/Students"));
+const Sponsors = lazy(() => import("./components/Sponsor"));
+
+function RouteFallback() {
+    return (
+        <div
+            style={{
+                minHeight: "45vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "rgba(255,255,255,0.85)",
+                fontFamily: "system-ui, sans-serif",
+                fontSize: "1rem",
+            }}
+        >
+            Loading…
+        </div>
+    );
+}
 
 function App() {
     const width = useScreenWidth();
@@ -19,14 +39,16 @@ function App() {
             {isDesktop ? (
                 <Router>
                     <Navbar />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/aboutus" element={<AboutUs />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/students" element={<Students />} />
-                        <Route path="/sponsor" element={<Sponsors />} />
-                        <Route path="/gallery" element={<Gallery />} />
-                    </Routes>
+                    <Suspense fallback={<RouteFallback />}>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/aboutus" element={<AboutUs />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/students" element={<Students />} />
+                            <Route path="/sponsor" element={<Sponsors />} />
+                            <Route path="/gallery" element={<Gallery />} />
+                        </Routes>
+                    </Suspense>
                 </Router>
             ) : (
                 <ScreenBlocker />

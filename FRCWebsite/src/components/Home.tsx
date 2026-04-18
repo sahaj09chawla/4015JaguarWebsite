@@ -201,7 +201,13 @@ function Home() {
                     </div>
 
                     <div className="image-wrapper">
-                        <img src={images[currentIndex]} alt={`Slide ${currentIndex}`} className="gallery-image" />
+                        <img
+                            src={images[currentIndex]}
+                            alt={`Slide ${currentIndex}`}
+                            className="gallery-image"
+                            decoding="async"
+                            fetchPriority="high"
+                        />
                         <div className="overlay" />
                     </div>
 
@@ -236,7 +242,7 @@ function Home() {
                 <div className="image-grid">
                     {galleryImages.map((image, index) => (
                         <div key={image.id} className="grid-item" onClick={() => openModal(image.src, index)}>
-                            <img src={image.src} alt={image.alt} loading="lazy" />
+                            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
                         </div>
                     ))}
                 </div>
@@ -248,7 +254,7 @@ function Home() {
                         &#10094;
                     </button>
 
-                    <img src={modalImage} alt="Expanded view" onClick={e => e.stopPropagation()}/>
+                    <img src={modalImage} alt="Expanded view" decoding="async" fetchPriority="high" onClick={e => e.stopPropagation()}/>
 
                     <button className="modal-nav-button right" onClick={(e) => {e.stopPropagation();goToNextImage();}} aria-label="Next image">
                         &#10095;
@@ -275,6 +281,7 @@ function Home() {
                                 src="https://www.youtube.com/embed/Xi4naxTUPnY?start=0"
                                 title="2020 Season Highlights"
                                 allowFullScreen
+                                loading="lazy"
                             ></iframe>
                         </div>
 
@@ -283,6 +290,7 @@ function Home() {
                                 src="https://www.youtube.com/embed/prOTfw1wLH8?start=0"
                                 title="2022 Season Highlights"
                                 allowFullScreen
+                                loading="lazy"
                             ></iframe>
                         </div>
                     </div>
@@ -290,7 +298,7 @@ function Home() {
             </div>
             <div className="social-section">
                 <div className="social-background">
-                    <img src={Img14} alt="Team background" className="social-bg-image" />
+                    <img src={Img14} alt="Team background" className="social-bg-image" loading="lazy" decoding="async" />
                     <div className="social-overlay" />
                 </div>
 
@@ -301,13 +309,13 @@ function Home() {
 
                     <div className="social-logos">
                         <a href="https://www.instagram.com/frc4015jags/" target="_blank" rel="noopener noreferrer">
-                            <img src={instagram} alt="Instagram" className="social-logo" />
+                            <img src={instagram} alt="Instagram" className="social-logo" loading="lazy" decoding="async" />
                         </a>
                         <a href="https://x.com/frc4015" target="_blank" rel="noopener noreferrer">
-                            <img src={X} alt="Twitter/X" className="social-logo" />
+                            <img src={X} alt="Twitter/X" className="social-logo" loading="lazy" decoding="async" />
                         </a>
                         <a href="https://www.youtube.com/@sjssrobotics3292" target="_blank" rel="noopener noreferrer">
-                            <img src={youtube} alt="YouTube" className="social-logo" />
+                            <img src={youtube} alt="YouTube" className="social-logo" loading="lazy" decoding="async" />
                         </a>
                     </div>
 

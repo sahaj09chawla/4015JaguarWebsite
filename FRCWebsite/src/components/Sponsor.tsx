@@ -12,9 +12,6 @@ import EasterChapter from '../assets/eastern_Chapter.png';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';
 
-console.log('PDF.js version:', pdfjs.version);
-console.log('Worker URL:', pdfjs.GlobalWorkerOptions.workerSrc);
-
 function Sponsors() {
     const [numPages1, setNumPages1] = useState<number | null>(null);
     const [numPages2, setNumPages2] = useState<number | null>(null);
@@ -34,6 +31,10 @@ function Sponsors() {
     const containerRef1 = useRef<HTMLDivElement>(null);
     const containerRef2 = useRef<HTMLDivElement>(null);
     const sponsorsSectionRef = useRef<HTMLDivElement>(null);
+
+    /** Defer fetching/rendering PDFs until the viewer is near the viewport (saves bandwidth + main-thread work). */
+    const [shouldLoadPdf1, setShouldLoadPdf1] = useState(false);
+    const [shouldLoadPdf2, setShouldLoadPdf2] = useState(false);
 
     const pdfFile1 = useMemo(() => ({
         url: '/documents/SponsorshipPackage2025-2026.pdf'
@@ -79,6 +80,27 @@ function Sponsors() {
     }, [typingComplete]);
 
     useEffect(() => {
+        const el1 = containerRef1.current;
+        const el2 = containerRef2.current;
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    if (entry.target === el1) setShouldLoadPdf1(true);
+                    if (entry.target === el2) setShouldLoadPdf2(true);
+                }
+            },
+            { rootMargin: "400px 0px", threshold: 0 }
+        );
+        if (el1) observer.observe(el1);
+        if (el2) observer.observe(el2);
+        return () => {
+            if (el1) observer.unobserve(el1);
+            if (el2) observer.unobserve(el2);
+        };
+    }, []);
+
+    useEffect(() => {
         const observedSection = sponsorsSectionRef.current;
         const observer = new IntersectionObserver(
             (entries) => {
@@ -110,7 +132,6 @@ function Sponsors() {
         setNumPages1(numPages);
         setIsLoading1(false);
         setPdfError1(false);
-        console.log('PDF 1 loaded successfully with', numPages, 'pages');
     };
 
     const onDocumentLoadError1 = (error: Error) => {
@@ -123,7 +144,6 @@ function Sponsors() {
         setNumPages2(numPages);
         setIsLoading2(false);
         setPdfError2(false);
-        console.log('PDF 2 loaded successfully with', numPages, 'pages');
     };
 
     const onDocumentLoadError2 = (error: Error) => {
@@ -160,22 +180,6 @@ function Sponsors() {
         setIsLoading2(true);
         setPdfError2(false);
         setPageNumber2(1);
-    };
-
-    const onPageLoadSuccess1 = () => {
-        console.log('Page loaded successfully for PDF 1');
-    };
-
-    const onPageLoadSuccess2 = () => {
-        console.log('Page loaded successfully for PDF 2');
-    };
-
-    const onPageLoadError1 = (error: Error) => {
-        console.error('Error loading page for PDF 1:', error);
-    };
-
-    const onPageLoadError2 = (error: Error) => {
-        console.error('Error loading page for PDF 2:', error);
     };
 
     return (
@@ -225,16 +229,24 @@ function Sponsors() {
                                     <button onClick={() => downloadPdf('/documents/SponsorshipPackage2025-2026.pdf', 'JAGS_Sponsorship_Package.pdf')} className="download-button">Download PDF</button>
                                 </div>
                                 <div className="pdf-viewer">
-                                    {isLoading1 && <div className="pdf-loading">Loading PDF preview...</div>}
-                                    {pdfError1 ? (
-                                        <div className="pdf-error">
-                                            <p>Failed to load PDF preview.</p>
-                                            <button onClick={retryLoadPdf1} className="retry-button">Retry</button>
+                                    {!shouldLoadPdf1 ? (
+                                        <div className="pdf-loading" style={{ minHeight: 280 }}>
+                                            Preview loads when you scroll here…
                                         </div>
                                     ) : (
-                                        <Document file={pdfFile1} onLoadSuccess={onDocumentLoadSuccess1} onLoadError={onDocumentLoadError1} loading={<div className="pdf-loading">Loading PDF preview...</div>} error={<div className="pdf-error">Failed to load PDF</div>} options={pdfOptions}>
-                                            <Page pageNumber={pageNumber1} scale={scale1} width={containerRef1.current ? Math.min(containerRef1.current.offsetWidth - 30, 600) : 600} onLoadSuccess={onPageLoadSuccess1} onLoadError={onPageLoadError1} loading={<div>Loading page...</div>} error={<div>Error loading page</div>}/>
-                                        </Document>
+                                        <>
+                                            {isLoading1 && <div className="pdf-loading">Loading PDF preview...</div>}
+                                            {pdfError1 ? (
+                                                <div className="pdf-error">
+                                                    <p>Failed to load PDF preview.</p>
+                                                    <button onClick={retryLoadPdf1} className="retry-button">Retry</button>
+                                                </div>
+                                            ) : (
+                                                <Document file={pdfFile1} onLoadSuccess={onDocumentLoadSuccess1} onLoadError={onDocumentLoadError1} loading={<div className="pdf-loading">Loading PDF preview...</div>} error={<div className="pdf-error">Failed to load PDF</div>} options={pdfOptions}>
+                                                    <Page pageNumber={pageNumber1} scale={scale1} width={containerRef1.current ? Math.min(containerRef1.current.offsetWidth - 30, 600) : 600} loading={<div>Loading page...</div>} error={<div>Error loading page</div>}/>
+                                                </Document>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                                 <div className="pdf-pagination">
@@ -266,16 +278,24 @@ function Sponsors() {
                                     <button onClick={() => downloadPdf('/documents/2025sponsorshipinstructions.pdf', 'JAGS_Sponsorship_Agreement.pdf')} className="download-button">Download PDF</button>
                                 </div>
                                 <div className="pdf-viewer">
-                                    {isLoading2 && <div className="pdf-loading">Loading PDF preview...</div>}
-                                    {pdfError2 ? (
-                                        <div className="pdf-error">
-                                            <p>Failed to load PDF preview.</p>
-                                            <button onClick={retryLoadPdf2} className="retry-button">Retry</button>
+                                    {!shouldLoadPdf2 ? (
+                                        <div className="pdf-loading" style={{ minHeight: 280 }}>
+                                            Preview loads when you scroll here…
                                         </div>
                                     ) : (
-                                        <Document file={pdfFile2} onLoadSuccess={onDocumentLoadSuccess2} onLoadError={onDocumentLoadError2} loading={<div className="pdf-loading">Loading PDF preview...</div>} error={<div className="pdf-error">Failed to load PDF</div>} options={pdfOptions}>
-                                            <Page pageNumber={pageNumber2} scale={scale2} width={containerRef2.current ? Math.min(containerRef2.current.offsetWidth - 30, 600) : 600} onLoadSuccess={onPageLoadSuccess2} onLoadError={onPageLoadError2} loading={<div>Loading page...</div>} error={<div>Error loading page</div>}/>
-                                        </Document>
+                                        <>
+                                            {isLoading2 && <div className="pdf-loading">Loading PDF preview...</div>}
+                                            {pdfError2 ? (
+                                                <div className="pdf-error">
+                                                    <p>Failed to load PDF preview.</p>
+                                                    <button onClick={retryLoadPdf2} className="retry-button">Retry</button>
+                                                </div>
+                                            ) : (
+                                                <Document file={pdfFile2} onLoadSuccess={onDocumentLoadSuccess2} onLoadError={onDocumentLoadError2} loading={<div className="pdf-loading">Loading PDF preview...</div>} error={<div className="pdf-error">Failed to load PDF</div>} options={pdfOptions}>
+                                                    <Page pageNumber={pageNumber2} scale={scale2} width={containerRef2.current ? Math.min(containerRef2.current.offsetWidth - 30, 600) : 600} loading={<div>Loading page...</div>} error={<div>Error loading page</div>}/>
+                                                </Document>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                                 <div className="pdf-pagination">
@@ -298,20 +318,20 @@ function Sponsors() {
 
             <div className="sponsors-grid">
                 <div className={`sponsor-logo ${visibleLogos[0] ? 'visible' : ''}`}>
-                    <img src={Apple} alt="Apple" />
+                    <img src={Apple} alt="Apple" loading="lazy" decoding="async" />
                 </div>
                 <div className={`sponsor-logo ${visibleLogos[1] ? 'visible' : ''}`}>
-                    <img src={CGI} alt="CGI" />
+                    <img src={CGI} alt="CGI" loading="lazy" decoding="async" />
                 </div>
 
                 <div className={`sponsor-logo ${visibleLogos[2] ? 'visible' : ''}`}>
-                    <img src={WellLife} alt="WellLife" />
+                    <img src={WellLife} alt="WellLife" loading="lazy" decoding="async" />
                 </div>
                 <div className={`sponsor-logo ${visibleLogos[3] ? 'visible' : ''}`}>
-                    <img src={EasterChapter} alt="Eastern Chapter" />
+                    <img src={EasterChapter} alt="Eastern Chapter" loading="lazy" decoding="async" />
                 </div>
                 <div className={`sponsor-logo ${visibleLogos[4] ? 'visible' : ''}`}>
-                    <img src={Laser} alt="Pro Laser Cut" />
+                    <img src={Laser} alt="Pro Laser Cut" loading="lazy" decoding="async" />
                 </div>
             </div>
         </div>
