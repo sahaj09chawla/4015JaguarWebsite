@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "node scripts/generate-gallery-manifest.mjs && tsc -b && vite build",
+    "build": "node scripts/generate-gallery-thumbnails.mjs && node scripts/generate-gallery-manifest.mjs && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "client": "vite --host localhost --port 5173",
@@ -41,6 +41,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
     "image-size": "^2.0.2",
+    "sharp": "^0.34.5",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.2"

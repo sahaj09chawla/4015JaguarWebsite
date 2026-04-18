@@ -20,6 +20,9 @@ server/.env
 server/.env.*
 !.env.example
 
+# Generated gallery WebP thumbnails (rebuilt by scripts/generate-gallery-thumbnails.mjs)
+src/assets/gallery/thumbs
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

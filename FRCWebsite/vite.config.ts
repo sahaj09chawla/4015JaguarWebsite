@@ -6,6 +6,11 @@ import react from '@vitejs/plugin-react';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function runGalleryThumbs(): void {
+  const script = path.join(__dirname, 'scripts', 'generate-gallery-thumbnails.mjs');
+  execFileSync(process.execPath, [script], { cwd: __dirname, stdio: 'inherit' });
+}
+
 function runGalleryManifest(): void {
   const script = path.join(__dirname, 'scripts', 'generate-gallery-manifest.mjs');
   execFileSync(process.execPath, [script], { cwd: __dirname, stdio: 'inherit' });
@@ -18,6 +23,7 @@ export default defineConfig({
       name: 'gallery-manifest',
       // Dev only: `npm run build` already runs scripts/generate-gallery-manifest.mjs first.
       configureServer() {
+        runGalleryThumbs();
         runGalleryManifest();
       },
     },

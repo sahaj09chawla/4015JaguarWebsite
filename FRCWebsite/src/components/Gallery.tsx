@@ -4,7 +4,10 @@ import galleryManifest from '../generated/gallery-manifest.json';
 
 interface GalleryImage {
     index: number;
+    /** Full-resolution URL (modal). */
     src: string;
+    /** Smaller WebP for grid (generated at build). */
+    thumbSrc: string;
     width: number;
     height: number;
     aspectRatio: number;
@@ -16,8 +19,14 @@ type GalleryManifest = {
     images: { file: string; width: number; height: number }[];
 };
 
-/** Lazy glob: avoids bundling every gallery URL into the initial chunk. */
+/** Full-size originals (modal). Excludes generated thumbs folder via glob depth. */
 const imageLoaders = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png}') as Record<
+    string,
+    () => Promise<ImageModule>
+>;
+
+/** Build-generated WebP thumbnails for the grid (max ~800px wide). */
+const thumbLoaders = import.meta.glob('../assets/gallery/thumbs/*.webp') as Record<
     string,
     () => Promise<ImageModule>
 >;
@@ -26,6 +35,10 @@ function fileFromGlobPath(globPath: string): string {
     const norm = globPath.replace(/\\/g, '/');
     const i = norm.lastIndexOf('/');
     return i === -1 ? norm : norm.slice(i + 1);
+}
+
+function baseNameWithoutExt(filename: string): string {
+    return filename.replace(/\.[^.]+$/u, '');
 }
 
 function Gallery() {
@@ -60,8 +73,25 @@ function Gallery() {
             const manifest = galleryManifest as GalleryManifest;
             const dimByFile = new Map(manifest.images.map((img) => [img.file, img]));
 
+            const thumbByBase = new Map<string, () => Promise<ImageModule>>();
+            for (const key of Object.keys(thumbLoaders)) {
+                const base = baseNameWithoutExt(fileFromGlobPath(key));
+                thumbByBase.set(base, thumbLoaders[key]);
+            }
+
             const modules = await Promise.all(paths.map((p) => imageLoaders[p]()));
             const srcs = modules.map((m) => m.default);
+
+            const thumbSrcs = await Promise.all(
+                paths.map(async (p, i) => {
+                    const file = fileFromGlobPath(p);
+                    const base = baseNameWithoutExt(file);
+                    const loadThumb = thumbByBase.get(base);
+                    if (!loadThumb) return srcs[i];
+                    const mod = await loadThumb();
+                    return mod.default;
+                })
+            );
 
             const imgData: GalleryImage[] = paths.map((p, i) => {
                 const file = fileFromGlobPath(p);
@@ -71,6 +101,7 @@ function Gallery() {
                 return {
                     index: i,
                     src: srcs[i],
+                    thumbSrc: thumbSrcs[i],
                     width: w,
                     height: h,
                     aspectRatio: w / h,
@@ -140,7 +171,7 @@ function Gallery() {
                         {row.map((img, i) => (
                             <img
                                 key={`${rowIndex}-${img.index}-${i}`}
-                                src={img.src}
+                                src={img.thumbSrc}
                                 style={{ width: `${img.width}px`, height: `${img.height}px` }}
                                 className="gallery-image1"
                                 alt={`Gallery item ${rowIndex}-${i}`}
