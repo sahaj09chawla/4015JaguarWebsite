@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import './Gallery.css';
+import galleryManifest from '../generated/gallery-manifest.json';
 
 interface GalleryImage {
     index: number;
@@ -11,11 +12,21 @@ interface GalleryImage {
 
 type ImageModule = { default: string };
 
+type GalleryManifest = {
+    images: { file: string; width: number; height: number }[];
+};
+
 /** Lazy glob: avoids bundling every gallery URL into the initial chunk. */
 const imageLoaders = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png}') as Record<
     string,
     () => Promise<ImageModule>
 >;
+
+function fileFromGlobPath(globPath: string): string {
+    const norm = globPath.replace(/\\/g, '/');
+    const i = norm.lastIndexOf('/');
+    return i === -1 ? norm : norm.slice(i + 1);
+}
 
 function Gallery() {
     const [displayedText, setDisplayedText] = useState('');
@@ -42,20 +53,29 @@ function Gallery() {
 
     useEffect(() => {
         const loadImages = async () => {
-            const paths = Object.keys(imageLoaders).sort();
+            const paths = Object.keys(imageLoaders).sort((a, b) =>
+                fileFromGlobPath(a).localeCompare(fileFromGlobPath(b), undefined, { numeric: true })
+            );
+
+            const manifest = galleryManifest as GalleryManifest;
+            const dimByFile = new Map(manifest.images.map((img) => [img.file, img]));
 
             const modules = await Promise.all(paths.map((p) => imageLoaders[p]()));
             const srcs = modules.map((m) => m.default);
 
-            const dimensionsList = await Promise.all(srcs.map((src) => getImageDimensions(src)));
-
-            const imgData: GalleryImage[] = paths.map((_, i) => ({
-                index: i,
-                src: srcs[i],
-                width: dimensionsList[i].width,
-                height: dimensionsList[i].height,
-                aspectRatio: dimensionsList[i].width / dimensionsList[i].height,
-            }));
+            const imgData: GalleryImage[] = paths.map((p, i) => {
+                const file = fileFromGlobPath(p);
+                const dim = dimByFile.get(file);
+                const w = dim?.width ?? 3;
+                const h = dim?.height ?? 2;
+                return {
+                    index: i,
+                    src: srcs[i],
+                    width: w,
+                    height: h,
+                    aspectRatio: w / h,
+                };
+            });
 
             setFlatImages(imgData);
 
@@ -165,15 +185,6 @@ function Gallery() {
             )}
         </div>
     );
-}
-
-function getImageDimensions(src: string): Promise<{ width: number; height: number }> {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
-        img.onerror = () => resolve({ width: 3, height: 2 });
-        img.src = src;
-    });
 }
 
 function calculateLayout(
