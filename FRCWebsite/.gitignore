@@ -12,7 +12,8 @@ dist
 dist-ssr
 *.local
 
-server
+# Backend: track server source; ignore deps and local secrets
+server/node_modules
 .env
 .env.*
 server/.env
